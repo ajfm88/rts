@@ -4,8 +4,9 @@
 
 ### Source Code of each section and Live Demos of every project of the course 👨🏽‍💻
 
-| Sect # |                                               Section Name                                               |                  Live Demo                  |
-| :----: | :------------------------------------------------------------------------------------------------------: | :-----------------------------------------: |
-|   01   |           [Let's Dive In!](https://github.com/ajfm88/modern-react-with-redux/tree/main/01-jsx)           | [Live Demo](https://jsx-demo.onrender.com)  |
-|   02   |     [Creating Content with JSX](https://github.com/ajfm88/modern-react-with-redux/tree/main/01-jsx)      | [Live Demo](https://jsx-demo.onrender.com)  |
-|   03   | [Building with Reusable Components](https://github.com/ajfm88/modern-react-with-redux/tree/main/03-pdas) | [Live Demo](https://pdas-demo.onrender.com) |
+| Sect # |                                               Section Name                                               |                   Live Demo                    |
+| :----: | :------------------------------------------------------------------------------------------------------: | :--------------------------------------------: |
+|   01   |           [Let's Dive In!](https://github.com/ajfm88/modern-react-with-redux/tree/main/01-jsx)           |   [Live Demo](https://jsx-demo.onrender.com)   |
+|   02   |     [Creating Content with JSX](https://github.com/ajfm88/modern-react-with-redux/tree/main/01-jsx)      |   [Live Demo](https://jsx-demo.onrender.com)   |
+|   03   | [Building with Reusable Components](https://github.com/ajfm88/modern-react-with-redux/tree/main/03-pdas) |  [Live Demo](https://pdas-demo.onrender.com)   |
+|   04   | [State: How to Change Your App](https://github.com/ajfm88/modern-react-with-redux/tree/main/04-animals)  | [Live Demo](https://animals-demo.onrender.com) |
