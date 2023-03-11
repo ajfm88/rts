@@ -23,14 +23,14 @@ function BookShow({ book, onDelete, onEdit }) {
   }
 
   return (
-    <div className='book-show'>
-      <img alt='books' src={`https://picsum.photos/seed/${book.id}/300/200`} />
+    <div className="book-show">
+      <img alt="books" src={`https://picsum.photos/seed/${book.id}/300/200`} />
       <div>{content}</div>
-      <div className='actions'>
-        <button className='edit' onClick={handleEditClick}>
+      <div className="actions">
+        <button className="edit" onClick={handleEditClick}>
           Edit
         </button>
-        <button className='delete' onClick={handleDeleteClick}>
+        <button className="delete" onClick={handleDeleteClick}>
           Delete
         </button>
       </div>
