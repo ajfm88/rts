@@ -5,11 +5,13 @@ function Accordion({ items }) {
   const [expandedIndex, setExpandedIndex] = useState(-1);
 
   const handleClick = (nextIndex) => {
-    if (expandedIndex === nextIndex) {
-      setExpandedIndex(-1);
-    } else {
-      setExpandedIndex(nextIndex);
-    }
+    setExpandedIndex((currentExpandedIndex) => {
+      if (currentExpandedIndex === nextIndex) {
+        return -1;
+      } else {
+        return nextIndex;
+      }
+    });
   };
 
   const renderedItems = items.map((item, index) => {
@@ -30,7 +32,7 @@ function Accordion({ items }) {
           {item.label}
           {icon}
         </div>
-        {isExpanded && <div className='border-b p-5 '>{item.content}</div>}
+        {isExpanded && <div className='border-b p-5'>{item.content}</div>}
       </div>
     );
   });
