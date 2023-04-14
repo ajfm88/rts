@@ -13,7 +13,7 @@ function ButtonPage() {
           secondary
           outline
           rounded
-          className="mb-5"
+          className='mb-5'
           onClick={handleClick}
         >
           <GoBell />
