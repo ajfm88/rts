@@ -2,9 +2,7 @@ import { GoBell, GoCloudDownload, GoDatabase } from 'react-icons/go';
 import Button from '../components/Button';
 
 function ButtonPage() {
-  const handleClick = () => {
-    console.log('Clicked!');
-  };
+  const handleClick = () => {};
 
   return (
     <div>
@@ -13,7 +11,7 @@ function ButtonPage() {
           secondary
           outline
           rounded
-          className="mb-5"
+          className='mb-5'
           onClick={handleClick}
         >
           <GoBell />
