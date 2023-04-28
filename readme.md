@@ -16,3 +16,4 @@
 |   12   | [Practicing Props and State Design](https://github.com/ajfm88/modern-react-with-redux/tree/main/12-comps-props) | [Live Demo](https://components-section-12.onrender.com) |
 |   13   |     [Making Navigation Reusable](https://github.com/ajfm88/modern-react-with-redux/tree/main/13-comps-nav)      | [Live Demo](https://components-section-13.onrender.com) |
 |   14   |  [Creating Portals with ReactDOM](https://github.com/ajfm88/modern-react-with-redux/tree/main/14-comp-portals)  | [Live Demo](https://components-section-14.onrender.com) |
+|   15   |  [Make a Feature-Full Data Table!](https://github.com/ajfm88/modern-react-with-redux/tree/main/15-comp-table)   | [Live Demo](https://components-section-15.onrender.com) |
