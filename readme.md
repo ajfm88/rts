@@ -17,3 +17,4 @@
 |   13   |     [Making Navigation Reusable](https://github.com/ajfm88/modern-react-with-redux/tree/main/13-comps-nav)      | [Live Demo](https://components-section-13.onrender.com) |
 |   14   |  [Creating Portals with ReactDOM](https://github.com/ajfm88/modern-react-with-redux/tree/main/14-comp-portals)  | [Live Demo](https://components-section-14.onrender.com) |
 |   15   |  [Make a Feature-Full Data Table!](https://github.com/ajfm88/modern-react-with-redux/tree/main/15-comp-table)   | [Live Demo](https://components-section-15.onrender.com) |
+|   16   | [Getting Clever with Data Sorting](https://github.com/ajfm88/modern-react-with-redux/tree/main/16-data-sorting) | [Live Demo](https://components-section-16.onrender.com) |
