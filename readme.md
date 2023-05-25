@@ -18,3 +18,4 @@
 |   14   |  [Creating Portals with ReactDOM](https://github.com/ajfm88/modern-react-with-redux/tree/main/14-comp-portals)  | [Live Demo](https://components-section-14.onrender.com) |
 |   15   |  [Make a Feature-Full Data Table!](https://github.com/ajfm88/modern-react-with-redux/tree/main/15-comp-table)   | [Live Demo](https://components-section-15.onrender.com) |
 |   16   | [Getting Clever with Data Sorting](https://github.com/ajfm88/modern-react-with-redux/tree/main/16-data-sorting) | [Live Demo](https://components-section-16.onrender.com) |
+|   17   |      [Custom Hooks In Depth](https://github.com/ajfm88/modern-react-with-redux/tree/main/17-custom-hooks)       | [Live Demo](https://components-section-17.onrender.com) |
