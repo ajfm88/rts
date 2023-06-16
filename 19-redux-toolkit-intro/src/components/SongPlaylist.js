@@ -1,13 +1,15 @@
-import { createRandomSong } from "../data";
+import { useDispatch } from 'react-redux';
+import { createRandomSong } from '../data';
+import { addSong } from '../store';
 
 function SongPlaylist() {
+  const dispatch = useDispatch();
   // To Do:
   // Get list of songs
   const songPlaylist = [];
 
   const handleSongAdd = (song) => {
-    // To Do:
-    // Add song to list of songs
+    dispatch(addSong(song));
   };
   const handleSongRemove = (song) => {
     // To Do:
@@ -20,7 +22,7 @@ function SongPlaylist() {
         {song}
         <button
           onClick={() => handleSongRemove(song)}
-          className="button is-danger"
+          className='button is-danger'
         >
           X
         </button>
@@ -29,13 +31,13 @@ function SongPlaylist() {
   });
 
   return (
-    <div className="content">
-      <div className="table-header">
-        <h3 className="subtitle is-3">Song Playlist</h3>
-        <div className="buttons">
+    <div className='content'>
+      <div className='table-header'>
+        <h3 className='subtitle is-3'>Song Playlist</h3>
+        <div className='buttons'>
           <button
             onClick={() => handleSongAdd(createRandomSong())}
-            className="button is-link"
+            className='button is-link'
           >
             + Add Song to Playlist
           </button>
