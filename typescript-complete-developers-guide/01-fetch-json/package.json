@@ -1,5 +1,5 @@
 {
-  "name": "01-fetch-json",
+  "name": "fetchjson",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.27.2",
-    "ts-node": "^10.9.2"
+    "axios": "^0.21.1"
   }
 }
