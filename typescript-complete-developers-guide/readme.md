@@ -7,3 +7,4 @@
 | Sect # |                                                                    Section Name                                                                     |   Live Demo   |
 | :----: | :-------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------: |
 |   01   | [Getting Started with Typescript](https://github.com/ajfm88/react-typescript-projects/tree/main/typescript-complete-developers-guide/01-fetch-json) | [Live Demo]() |
+|   02   |      [What is a Type System?](https://github.com/ajfm88/react-typescript-projects/tree/main/typescript-complete-developers-guide/02-features)       | [Live Demo]() |
