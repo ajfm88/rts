@@ -11,3 +11,4 @@
 |   03   |        [Type Annotations in Action](https://github.com/ajfm88/react-typescript-projects/tree/main/typescript-complete-developers-guide/03-annotations)         |
 |   04   | [Annotations With Functions and Objects](https://github.com/ajfm88/react-typescript-projects/tree/main/typescript-complete-developers-guide/04-annot-func-obj) |
 |   05   |          [Mastering Typed Arrays](https://github.com/ajfm88/react-typescript-projects/tree/main/typescript-complete-developers-guide/05-typed-arrays)          |
+|   06   |              [Tuples in Typescript](https://github.com/ajfm88/react-typescript-projects/tree/main/typescript-complete-developers-guide/06-tuples)              |
