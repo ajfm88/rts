@@ -2,7 +2,7 @@
 
 ## [Stephen Grider](https://www.linkedin.com/in/stephengrider) (Engineering Architect & Instructor) 👨‍🏫
 
-### Source Code of each section and Live Demos of every project of the course 👨🏽‍💻
+### Source Code of each section of the course 👨🏽‍💻
 
 | Sect # |                                                                    Section Name                                                                     |
 | :----: | :-------------------------------------------------------------------------------------------------------------------------------------------------: |
@@ -12,3 +12,4 @@
 |   04   | [Annotations With Functions and Objects](https://github.com/ajfm88/react-typescript-projects/tree/main/typescript-comp-dev-guide/04-annot-func-obj) |
 |   05   |          [Mastering Typed Arrays](https://github.com/ajfm88/react-typescript-projects/tree/main/typescript-comp-dev-guide/05-typed-arrays)          |
 |   06   |              [Tuples in Typescript](https://github.com/ajfm88/react-typescript-projects/tree/main/typescript-comp-dev-guide/06-tuples)              |
+|   07   |        [The All-Important Interface](https://github.com/ajfm88/react-typescript-projects/tree/main/typescript-comp-dev-guide/07-interfaces)         |
