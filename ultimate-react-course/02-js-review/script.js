@@ -112,7 +112,7 @@ const data = [
     publicationDate: "1996-08-01",
     author: "George R. R. Martin",
     genres: ["fantasy", "high-fantasy", "novel", "fantasy fiction"],
-    hasMovieAdaptation: true,
+    hasMovieAdaptation: false,
     pages: 835,
     translations: {
       korean: "왕좌의 게임",
@@ -247,3 +247,13 @@ const essentialData = books.map((book) => ({
   reviewsCount: getTotalReviewCount(book),
 }));
 essentialData;
+
+const longBooksWithMovie = books
+  .filter((book) => book.pages > 500)
+  .filter((book) => book.hasMovieAdaptation);
+longBooksWithMovie;
+
+const adventureBooks = books
+  .filter((books) => books.genres.includes("adventure"))
+  .map((book) => book.title);
+adventureBooks;
