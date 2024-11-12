@@ -1,8 +1,8 @@
 # 🖥️⌨️ [Typescript: The Complete Developer’s Guide](https://www.udemy.com/course/typescript-the-complete-developers-guide) 🎧🖱️
 
-## [Stephen Grider](https://www.linkedin.com/in/stephengrider) (Engineering Architect & Instructor) 👨‍🏫
+## [Stephen Grider](https://www.udemy.com/user/sgslo) (Engineering Architect & Instructor) 👨‍🏫
 
-### Source Code of each section of the course 👨🏽‍💻
+### Source Code for each section of the course 👨🏽‍💻
 
 | Sect # |                                                                    Section Name                                                                     |
 | :----: | :-------------------------------------------------------------------------------------------------------------------------------------------------: |

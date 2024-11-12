@@ -1,8 +1,8 @@
 # 🖥️⌨️ [Modern React with Redux [2024 Update]](https://www.udemy.com/course/react-redux) 🎧🖱️
 
-## [Stephen Grider](https://www.linkedin.com/in/stephengrider) (Engineering Architect & Instructor) 👨‍🏫
+## [Stephen Grider](https://www.udemy.com/user/sgslo) (Engineering Architect & Instructor) 👨‍🏫
 
-### Source Code of each section and Live Demos of every project of the course 👨🏽‍💻
+### Source Code for each section and Live Demos for every project of the course 👨🏽‍💻
 
 | Sect # |                                                          Section Name                                                          |                 Live Demo                  |
 | :----: | :----------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------: |
