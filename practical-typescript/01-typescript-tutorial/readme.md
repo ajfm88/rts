@@ -4,36 +4,6 @@ The project also delves into advanced TypeScript features such as generics, fetc
 
 Overall, the project is an in-depth TypeScript learning resource, ideal for developers who wish to gain a thorough understanding of TypeScript, from basic to advanced levels, through practical examples and challenges.
 
-## Setup Info
-
-- even with error you can run the project but you won't be able to build it "npm run build"
-
-## Union Type
-
-In TypeScript, a Union Type allows a variable to hold a value of multiple, distinct types, specified using the | operator. It can also be used to specify that a variable can hold one of several specific values. More examples are coming up.
-
-```ts
-let tax: number | string = 10;
-tax = 100;
-tax = "$10";
-
-// fancy name - literal value type
-let requestStatus: "pending" | "success" | "error" = "pending";
-requestStatus = "success";
-requestStatus = "error";
-// requestStatus = 'random';
-```
-
-## Type - "any"
-
-In TypeScript, the "any" type is a powerful way to work with existing JavaScript, allowing you to opt-out of type-checking and let the values pass through compile-time checks. It means a variable declared with the any type can hold a value of any type. Later will also cover - "unknown" and "never"
-
-```ts
-let notSure: any = 4;
-notSure = "maybe a string instead";
-notSure = false; // okay, definitely a boolean
-```
-
 ## Practical Application of Type Annotation
 
 ```ts
