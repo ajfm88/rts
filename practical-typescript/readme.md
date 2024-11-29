@@ -4,6 +4,6 @@
 
 ### Source Code for each section of the course 👨🏽‍💻
 
-| Sect # |           Section Name            |
-| :----: | :-------------------------------: |
-|   01   | [null](https://github.com/ajfm88) |
+| Sect # |                                                  Section Name                                                  |
+| :----: | :------------------------------------------------------------------------------------------------------------: |
+|   03   | [Typescript Fundamentals](https://github.com/ajfm88/rts/tree/main/practical-typescript/01-typescript-tutorial) |
