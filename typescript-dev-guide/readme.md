@@ -15,3 +15,4 @@
 |   07   |        [The All-Important Interface](https://github.com/ajfm88/rts/tree/main/typescript-dev-guide/07-interfaces)         |
 |   08   |      [Building Functionality with Classes](https://github.com/ajfm88/rts/tree/main/typescript-dev-guide/08-classes)      |
 |   09   |         [Design Patterns with Typescript](https://github.com/ajfm88/rts/tree/main/typescript-dev-guide/09-maps)          |
+|   10   |             [More on Design Patterns](https://github.com/ajfm88/rts/tree/main/typescript-dev-guide/10-sort)              |
