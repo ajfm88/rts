@@ -4,46 +4,6 @@ The project also delves into advanced TypeScript features such as generics, fetc
 
 Overall, the project is an in-depth TypeScript learning resource, ideal for developers who wish to gain a thorough understanding of TypeScript, from basic to advanced levels, through practical examples and challenges.
 
-## Arrays - Fundamentals
-
-In TypeScript, arrays are used to store multiple values in a single variable. You can define the type of elements that an array can hold using type annotations.
-
-```ts
-let prices: number[] = [100, 75, 42];
-
-let fruit: string[] = ["apple", "orange"];
-// fruit.push(1);
-// let people: string[] = ['bobo', 'peter', 1];
-//
-// be careful "[]" means literally empty array
-// let randomValues: [] = [1];
-
-// be careful with inferred array types
-// let names = ['peter', 'susan'];
-// let names = ['peter', 'susan', 1];
-let array: (string | boolean)[] = ["apple", true, "orange", false];
-```
-
-## Challenge
-
-- Create an array temperatures of type number[] and assign it some values. Then, try to add a string value to it.
-- Create an array colors of type string[] and assign it some values. Then, try to add a boolean value to it.
-- Create an array mixedArray of type (number | string)[] and assign it some values. Then, try to add a boolean value to it.
-
-```ts
-// 1. Temperatures
-let temperatures: number[] = [20, 25, 30];
-// temperatures.push('hot'); // This will result in a TypeScript error
-
-// 2. Colors
-let colors: string[] = ["red", "green", "blue"];
-// colors.push(true); // This will result in a TypeScript error
-
-// 3. Mixed Array
-let mixedArray: (number | string)[] = [1, "two", 3];
-// mixedArray.push(true); // This will result in a TypeScript error
-```
-
 ## Objects - Fundamentals
 
 In TypeScript, an object is a collection of key-value pairs with specified types for each key, providing static type checking for properties.
