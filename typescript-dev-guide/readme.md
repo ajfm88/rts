@@ -8,3 +8,4 @@
 | :----: | :-----------------------------------------------------------------------------------------------------------: |
 |   01   | [Getting Started with Typescript](https://github.com/ajfm88/rts/tree/main/typescript-dev-guide/01-fetch-json) |
 |   02   |      [What is a Type System?](https://github.com/ajfm88/rts/tree/main/typescript-dev-guide/02-features)       |
+|   05   |      [Mastering Typed Arrays](https://github.com/ajfm88/rts/tree/main/typescript-dev-guide/02-features)       |
