@@ -1,39 +1,3 @@
-This project stands as an in-depth guide to TypeScript, meticulously covering its fundamental basics and progressing to its more advanced concepts. It starts with basic setup instructions for creating a TypeScript project using Vite and progresses through a series of tutorials covering various TypeScript features and best practices. Key topics include type annotations, type inference, practical applications of type annotation, union types, handling of "any", "unknown", and "never" types, arrays, and objects fundamentals, challenges to reinforce learning, and functions with their complexities.
-
-The project also delves into advanced TypeScript features such as generics, fetching data with TypeScript, working with the Zod library for data validation, understanding TypeScript declaration files, and class-based programming with TypeScript. Each tutorial is designed to provide hands-on experience with TypeScript, helping learners understand how to apply TypeScript features in real-world scenarios effectively.
-
-Overall, the project is an in-depth TypeScript learning resource, ideal for developers who wish to gain a thorough understanding of TypeScript, from basic to advanced levels, through practical examples and challenges.
-
-## Functions - Optional and Default Parameters
-
-In TypeScript, a default parameter value is an alternative to an optional parameter. When you provide a default value for a parameter, you're essentially making it optional because you're specifying a value that the function will use if no argument is provided for that parameter.
-
-However, there's a key difference between a parameter with a default value and an optional parameter. If a parameter has a default value, and you call the function without providing an argument for that parameter, the function will use the default value. But if a parameter is optional (indicated with a ?), and you call the function without providing an argument for that parameter, the value of the parameter inside the function will be undefined.
-
-- a function with optional parameters must work when they are not supplied
-
-```ts
-function calculatePrice(price: number, discount?: number) {
-  return price - (discount || 0);
-}
-
-let priceAfterDiscount = calculatePrice(100, 20);
-console.log(priceAfterDiscount); // Output: 80
-
-let priceWithoutDiscount = calculatePrice(300);
-console.log(priceWithoutDiscount); // Output: 300
-
-function calculateScore(initialScore: number, penaltyPoints: number = 0) {
-  return initialScore - penaltyPoints;
-}
-
-let scoreAfterPenalty = calculateScore(100, 20);
-console.log(scoreAfterPenalty); // Output: 80
-
-let scoreWithoutPenalty = calculateScore(300);
-console.log(scoreWithoutPenalty); // Output: 300
-```
-
 ## Function - rest parameter
 
 In JavaScript, a rest parameter is denoted by three dots (...) before the parameter's name and allows a function to accept any number of arguments. These arguments are collected into an array, which can be accessed within the function.
