@@ -80,9 +80,10 @@ function Menu() {
       {numPizzas > 0 ? (
         <>
           <p>
-            Authentic italian cuisine. 6 creative dishes to choose from. All
+            Authentic Italian cuisine. 6 creative dishes to choose from. All
             from our stone oven, all organic, all delicious.
           </p>
+
           <ul className="pizzas">
             {pizzas.map((pizza) => (
               <Pizza pizzaObj={pizza} key={pizza.name} />
@@ -90,18 +91,18 @@ function Menu() {
           </ul>
         </>
       ) : (
-        <p>We're still working on the menu. Please come back later :).</p>
+        <p>We're still working on our menu. Please come back later :)</p>
       )}
+
       {/* <Pizza
         name="Pizza Spinaci"
-        ingredients="tomato, mozarella, spinach, and ricotta cheese"
+        ingredients="Tomato, mozarella, spinach, and ricotta cheese"
         photoName="pizzas/spinaci.jpg"
         price={10}
       />
-
       <Pizza
-        name="Pizza Fungi"
-        ingredients="tomato, mushrooms"
+        name="Pizza Funghi"
+        ingredients="Tomato, mushrooms"
         price={12}
         photoName="pizzas/funghi.jpg"
       /> */}
@@ -135,16 +136,13 @@ function Pizza({ pizzaObj }) {
 
 function Footer() {
   const hour = new Date().getHours();
-  const openHour = 8;
+  const openHour = 12;
   const closeHour = 22;
   const isOpen = hour >= openHour && hour <= closeHour;
   console.log(isOpen);
 
-  // if (hour >= openHour && hour <= closeHour) {
-  //   alert("We're currently open!");
-  // } else {
-  //   alert("We're closed.");
-  // }
+  // if (hour >= openHour && hour <= closeHour) alert("We're currently open!");
+  // else alert("Sorry we're closed");
 
   // if (!isOpen) return <p>CLOSED</p>;
 
@@ -159,13 +157,15 @@ function Footer() {
       )}
     </footer>
   );
+
+  // return React.createElement("footer", null, "We're currently open!");
 }
 
 function Order({ closeHour, openHour }) {
   return (
     <div className="order">
       <p>
-        We're open from {openHour} until {closeHour}:00. Come visit us or order
+        We're open from {openHour}:00 to {closeHour}:00. Come visit us or order
         online.
       </p>
       <button className="btn">Order</button>
@@ -180,3 +180,6 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+// React before 18
+// ReactDOM.render(<App />, document.getElementById("root"));
