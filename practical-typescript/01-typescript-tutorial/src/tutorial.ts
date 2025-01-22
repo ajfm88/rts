@@ -1,3 +1,4 @@
+/*
 // Type Annotations
 // TypeScript Type Annotations allow developers to specify the types of variables, function parameters, return types, and object properties.
 
@@ -278,3 +279,40 @@ console.log(scoreAfterPenalty); // Output: 80
 
 let scoreWithoutPenalty = calculateScore(300);
 console.log(scoreWithoutPenalty); // Output: 300
+*/
+// ## Function - Rest Parameter
+
+// In JavaScript, a rest parameter is denoted by three dots (...) before the parameter's name and allows a function to accept any number of arguments.
+// These arguments are collected into an array, which can be accessed within the function.
+
+function sum(message: string, ...numbers: number[]): string {
+  const doubled = numbers.map((num) => num * 2);
+  console.log(doubled);
+
+  let total = numbers.reduce((previous, current) => {
+    return previous + current;
+  }, 0);
+  return `${message} ${total}`;
+}
+
+let result = sum("The total is:", 1, 2, 3, 4, 5); // result will be "The total is: 15"
+
+// ## Functions - "void" return type
+
+// In TypeScript, void is a special type that represents the absence of a value. When used as a function return type, void indicates that the function does not return a value.
+
+function logMessage(message: string): void {
+  console.log(message);
+}
+
+logMessage("Hello, TypeScript!"); // Output: Hello, TypeScript!
+
+// It's important to note that in TypeScript, a function that is declared with a void return type can still return a value, but the value will be ignored.
+// For example, the following code is valid TypeScript:
+
+function logMessage(message: string): void {
+  console.log(message);
+  return "This value is ignored";
+}
+
+logMessage("Hello, TypeScript!"); // Output: Hello, TypeScript!
