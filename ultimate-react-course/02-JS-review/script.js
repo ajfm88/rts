@@ -66,7 +66,7 @@ const data = [
     publicationDate: "1965-01-01",
     author: "Frank Herbert",
     genres: ["science fiction", "novel", "adventure"],
-    hasMovieAdaptation: true,
+    hasMovieAdaptation: false,
     pages: 658,
     translations: {
       spanish: "",
@@ -112,7 +112,7 @@ const data = [
     publicationDate: "1996-08-01",
     author: "George R. R. Martin",
     genres: ["fantasy", "high-fantasy", "novel", "fantasy fiction"],
-    hasMovieAdaptation: false,
+    hasMovieAdaptation: true,
     pages: 835,
     translations: {
       korean: "왕좌의 게임",
@@ -176,14 +176,14 @@ const updatedBook = {
 };
 updatedBook;
 
-// function getYear(str) { // Function declaration
+// function getYear(str) {
 //   return str.split("-")[0];
 // }
 
-const getYear = (str) => str.split("-")[0]; // function expression
+const getYear = (str) => str.split("-")[0];
 console.log(getYear(publicationDate));
 
-const summary = `${title} is a ${pages}-page long book, was written by ${author} and published in ${getYear(
+const summary = `${title}, a ${pages}-page long book, was written by ${author} and published in ${getYear(
   publicationDate
 )}. The book has ${hasMovieAdaptation ? "" : "not"} been adapted as a movie`;
 summary;
@@ -216,8 +216,8 @@ spanishTranslation;
 // count;
 
 function getTotalReviewCount(book) {
-  const goodreads = book.reviews.goodreads.reviewsCount;
-  const librarything = book.reviews.librarything?.reviewsCount ?? 0;
+  const goodreads = book.reviews?.goodreads?.reviewsCount;
+  const librarything = book.reviews?.librarything?.reviewsCount ?? 0;
   librarything;
   return goodreads + librarything;
 }
@@ -227,8 +227,8 @@ console.log(getTotalReviewCount(book));
 
 /*
 function getTotalReviewCount(book) {
-  const goodreads = book.reviews.goodreads.reviewsCount;
-  const librarything = book.reviews.librarything?.reviewsCount ?? 0;
+  const goodreads = book.reviews?.goodreads?.reviewsCount;
+  const librarything = book.reviews?.librarything?.reviewsCount ?? 0;
   librarything;
   return goodreads + librarything;
 }
@@ -290,14 +290,14 @@ const booksAfterUpdate = booksAfterDelete.map((book) =>
 booksAfterUpdate;
 */
 
-// fetch("https://jsonplaceholder.typicode.com/todos/")
+// fetch("https://jsonplaceholder.typicode.com/todos")
 //   .then((res) => res.json())
 //   .then((data) => console.log(data));
 
-// console.log("alejandro");
+// console.log("jonas");
 
-async function getTodos(params) {
-  const res = await fetch("https://jsonplaceholder.typicode.com/todos/");
+async function getTodos() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/todos");
   const data = await res.json();
   console.log(data);
 
@@ -307,4 +307,4 @@ async function getTodos(params) {
 const todos = getTodos();
 console.log(todos);
 
-console.log("alejandro");
+console.log("jonas");
