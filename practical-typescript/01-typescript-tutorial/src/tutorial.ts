@@ -525,7 +525,7 @@ const bob: Manager = { id: 2, name: "Bob", employees: [alice, steve] };
 
 printStaffDetails(alice); // Outputs: Alice is an employee in the Sales department.
 printStaffDetails(bob);
-*/
+
 // ## Intersection Types
 
 // In TypeScript, an intersection type (TypeA & TypeB) is a way of combining multiple types into one. This means that an object of an intersection type will have
@@ -565,3 +565,24 @@ type Animal = {
 };
 
 let tiger: Animal = { [propName]: 5 };
+*/
+// ## Interface - Fundamentals
+
+// - allow to setup shape for objects (only objects)
+
+interface Book {
+  readonly isbn: number;
+  title: string;
+  author: string;
+  genre?: string;
+}
+
+const deepWork: Book = {
+  isbn: 9781455586691,
+  title: "Deep Work",
+  author: "Cal Newport",
+  genre: "Self-help",
+};
+
+deepWork.title = "New Title"; // allowed
+// deepWork.isbn = 654321; // not allowed
