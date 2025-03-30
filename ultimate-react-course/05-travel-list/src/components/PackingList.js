@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Item } from "./Item";
+import Item from "./Item";
 
 export default function PackingList({
   items,
@@ -42,7 +42,7 @@ export default function PackingList({
           <option value="description">Sort by description</option>
           <option value="packed">Sort by packed status</option>
         </select>
-        <button onClick={onClearList}>Clear List</button>
+        <button onClick={onClearList}>Clear list</button>
       </div>
     </div>
   );
