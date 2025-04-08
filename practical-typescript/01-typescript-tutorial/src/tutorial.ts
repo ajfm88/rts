@@ -917,7 +917,7 @@ type Animal = {
 };
 
 let tiger: Animal = { [propName]: 5 };
-*/
+
 // ## Tuples
 
 // In TypeScript, a Tuple is a special type that allows you to create an array where the type of a fixed number of elements is known,
@@ -926,7 +926,7 @@ let tiger: Animal = { [propName]: 5 };
 
 // Tuples are useful when you want to return multiple values from a function.
 
-// By default, tuples in TypeScript are not read-only. This means you can modify the values of the elements in the tuple.However, TypeScript
+// By default, tuples in TypeScript are not read-only. This means you can modify the values of the elements in the tuple. However, TypeScript
 // does provide a way to make tuples read-only using the readonly keyword.
 let person: [string, number] = ["john", 25];
 console.log(person[0]); // Outputs: john
@@ -950,3 +950,27 @@ let susan: readonly [string, number] = ["susan", 25];
 // susan[0] = 'bob';
 // susan.push('some random value');
 console.log(susan);
+*/
+// ## Enums
+
+// Enums in TypeScript allow us to define a set of named constants. Using enums can make it easier to document intent,
+// or create a set of distinct cases.
+enum ServerResponseStatus {
+  Success = 200,
+  Error = "Error",
+}
+
+interface ServerResponse {
+  result: ServerResponseStatus;
+  data: string[];
+}
+
+function getServerResponse(): ServerResponse {
+  return {
+    result: ServerResponseStatus.Success,
+    data: ["first item", "second item"],
+  };
+}
+
+const response: ServerResponse = getServerResponse();
+console.log(response);

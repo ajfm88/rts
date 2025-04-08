@@ -1,29 +1,3 @@
-## Enums
-
-Enums in TypeScript allow us to define a set of named constants. Using enums can make it easier to document intent, or create a set of distinct cases.
-
-```ts
-enum ServerResponseStatus {
-  Success = 200,
-  Error = "Error",
-}
-
-interface ServerResponse {
-  result: ServerResponseStatus;
-  data: string[];
-}
-
-function getServerResponse(): ServerResponse {
-  return {
-    result: ServerResponseStatus.Success,
-    data: ["first item", "second item"],
-  };
-}
-
-const response: ServerResponse = getServerResponse();
-console.log(response);
-```
-
 ## Enums - Gotcha : Reverse Mapping
 
 In a numeric enum, TypeScript creates a reverse mapping from the numeric values to the enum member names. This means that if you assign a numeric value to an enum member, you can use that numeric value anywhere the enum type is expected.
