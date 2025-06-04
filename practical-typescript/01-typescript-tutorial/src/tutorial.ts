@@ -1203,7 +1203,7 @@ function getColorName(color: Color) {
 console.log(getColorName(Color.Red)); // Red
 console.log(getColorName(Color.Blue)); // Blue
 // console.log(getColorName(Color.Green)); // Green
-*/
+
 // ## Modules - Global Scope "Gotcha"
 
 // If your TypeScript files aren't modules (i.e., they don't have any import or export statements), they're treated as scripts in the global scope.
@@ -1233,3 +1233,17 @@ export const something = "something";
 ```json
 "module": "ESNext",
 ```;
+*/
+// ## Modules - Imports/Exports (including types)
+import newStudent, { sayHello, person, type Student } from "./actions";
+
+sayHello("TypeScript");
+console.log(person);
+console.log(newStudent);
+
+const anotherStudent: Student = {
+  name: "bob",
+  age: 23,
+};
+
+console.log(anotherStudent);
