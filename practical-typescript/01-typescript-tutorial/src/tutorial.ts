@@ -1425,7 +1425,7 @@ const year = checkInput(new Date());
 const random = checkInput("2020-05-05");
 console.log(year);
 console.log(random);
-*/
+
 // ## Challenge - Type Predicate
 
 // A type predicate is a function whose return type is a special kind of type that can be used to narrow down types within conditional blocks.
@@ -1471,4 +1471,37 @@ if (isStudent(person)) {
   person.study(); // This is safe because TypeScript knows that 'person' is a Student.
 } else {
   person.login();
+}
+*/
+// ## Optional - type "never" gotcha
+type Student = {
+  name: string;
+  study: () => void;
+};
+
+type User = {
+  name: string;
+  login: () => void;
+};
+
+type Person = Student | User;
+
+const person: Person = {
+  name: "anna",
+  study: () => console.log("Studying"),
+  // login: () => console.log('Logging in'),
+};
+// person;
+function isStudent(person: Person): person is Student {
+  // return 'study' in person;
+  return (person as Student).study !== undefined;
+}
+
+// Usage
+
+if (isStudent(person)) {
+  person.study(); // This is safe because TypeScript knows that 'person' is a Student.
+} else {
+  // in this case person is type "never"
+  console.log(person);
 }

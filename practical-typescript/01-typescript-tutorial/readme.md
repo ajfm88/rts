@@ -1,39 +1,3 @@
-## Optional - type "never" gotcha
-
-```ts
-type Student = {
-  name: string;
-  study: () => void;
-};
-
-type User = {
-  name: string;
-  login: () => void;
-};
-
-type Person = Student | User;
-
-const person: Person = {
-  name: "anna",
-  study: () => console.log("Studying"),
-  // login: () => console.log('Logging in'),
-};
-// person;
-function isStudent(person: Person): person is Student {
-  // return 'study' in person;
-  return (person as Student).study !== undefined;
-}
-
-// Usage
-
-if (isStudent(person)) {
-  person.study(); // This is safe because TypeScript knows that 'person' is a Student.
-} else {
-  // in this case person is type "never"
-  console.log(person);
-}
-```
-
 ## Challenge - Discriminated Unions and exhaustive check using the never type
 
 A discriminated union in TypeScript is a type that can be one of several different types, each identified by a unique literal property (the discriminator), allowing for type-safe handling of each possible variant.
