@@ -8,7 +8,7 @@
 | :----: | :------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------: |
 |   04   |   [Review of Essential JavaScript for React](https://github.com/ajfm88/rts/tree/main/ultimate-react-course/02-JS-review)   |               [none](https://bongo.cat)                |
 |   05   |   [Working With Components, Props, and JSX](https://github.com/ajfm88/rts/tree/main/ultimate-react-course/03-pizza-menu)   | [Live Demo](https://fast-react-pizza-menu.netlify.app) |
-|   06   | [State, Events, and Forms: Interactive Components](https://github.com/ajfm88/rts/tree/main/ultimate-react-course/04-steps) |               [none](https://bongo.cat)                |
+|   06   | [State, Events, and Forms: Interactive Components](https://github.com/ajfm88/rts/tree/main/ultimate-react-course/04-steps) |            [none](https://hackertyper.net)             |
 |   07   |    [Thinking In React: State Management](https://github.com/ajfm88/rts/tree/main/ultimate-react-course/05-travel-list)     |   [Live Demo](https://travel-list-jonas.netlify.app)   |
 |   08   |                [Eat-'N-Split](https://github.com/ajfm88/rts/tree/main/ultimate-react-course/06-eat-n-split)                |      [Live Demo](https://eat-n-split.netlify.app)      |
 |   10   |                 [usePopcorn](https://github.com/ajfm88/rts/tree/main/ultimate-react-course/07-usepopcorn)                  |                     [Live Demo]()                      |
