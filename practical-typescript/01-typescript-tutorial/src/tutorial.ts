@@ -1557,7 +1557,7 @@ const newState = reducer(15, {
   amount: 5,
   timestamp: 123456,
 });
-*/
+
 // ## Generics - Fundamentals
 
 // Generics in TypeScript are a way to create reusable code components that work with a variety of
@@ -1575,3 +1575,32 @@ const newState = reducer(15, {
 let array1: Array<string> = ["Apple", "Banana", "Mango"];
 let array2: Array<number> = [1, 2, 3];
 let array3: Array<boolean> = [true, false, true];
+*/
+// ## Generics - Create Generic Function and Interface
+function createString(arg: string): string {
+  return arg;
+}
+function createNumber(arg: number): number {
+  return arg;
+}
+
+// Define a generic function
+function genericFunction<T>(arg: T): T {
+  return arg;
+}
+
+const someStringValue = genericFunction<string>("Hello World");
+const someNumberValue = genericFunction<number>(2);
+
+// Define a generic interface
+interface GenericInterface<T> {
+  value: T;
+  getValue: () => T;
+}
+
+const genericString: GenericInterface<string> = {
+  value: "Hello World",
+  getValue() {
+    return this.value;
+  },
+};
