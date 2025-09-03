@@ -1575,7 +1575,7 @@ const newState = reducer(15, {
 let array1: Array<string> = ["Apple", "Banana", "Mango"];
 let array2: Array<number> = [1, 2, 3];
 let array3: Array<boolean> = [true, false, true];
-*/
+
 // ## Generics - Create Generic Function and Interface
 function createString(arg: string): string {
   return arg;
@@ -1614,3 +1614,25 @@ async function someFunc(): Promise<string> {
 }
 
 const result = someFunc();
+*/
+// ## Generics - Generate Array
+// generate an array of strings
+function generateStringArray(length: number, value: string): string[] {
+  let result: string[] = [];
+  result = Array(length).fill(value);
+  return result;
+}
+
+console.log(generateStringArray(3, "hello"));
+
+function createArray<T>(length: number, value: T): Array<T> {
+  let result: T[] = [];
+  result = Array(length).fill(value);
+  return result;
+}
+
+let arrayStrings = createArray<string>(3, "hello"); // ["hello", "hello", "hello"]
+let arrayNumbers = createArray<number>(4, 100); // [100, 100, 100, 100]
+
+console.log(arrayStrings);
+console.log(arrayNumbers);
