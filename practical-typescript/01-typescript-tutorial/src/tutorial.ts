@@ -1614,7 +1614,7 @@ async function someFunc(): Promise<string> {
 }
 
 const result = someFunc();
-*/
+
 // ## Generics - Generate Array
 // generate an array of strings
 function generateStringArray(length: number, value: string): string[] {
@@ -1636,3 +1636,12 @@ let arrayNumbers = createArray<number>(4, 100); // [100, 100, 100, 100]
 
 console.log(arrayStrings);
 console.log(arrayNumbers);
+*/
+// ## Generics - Part 5
+function pair<T, U>(param1: T, param2: U): [T, U] {
+  return [param1, param2];
+}
+
+// Usage
+let result = pair<number, string>(123, "Hello");
+console.log(result); // Output: [123, "Hello"]
