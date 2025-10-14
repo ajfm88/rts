@@ -1636,7 +1636,7 @@ let arrayNumbers = createArray<number>(4, 100); // [100, 100, 100, 100]
 
 console.log(arrayStrings);
 console.log(arrayNumbers);
-*/
+
 // ## Generics - Part 5
 function pair<T, U>(param1: T, param2: U): [T, U] {
   return [param1, param2];
@@ -1645,3 +1645,24 @@ function pair<T, U>(param1: T, param2: U): [T, U] {
 // Usage
 let result = pair<number, string>(123, "Hello");
 console.log(result); // Output: [123, "Hello"]
+*/
+// ## Generics - Inferred Type and Type Constraints
+function pair<T, U>(param1: T, param2: U): [T, U] {
+  return [param1, param2];
+}
+
+// Usage
+let result = pair(123, "Hello");
+
+//  const [name,setName] = useState('')
+//  const [products,setProducts] = useState<Product[]>([])
+
+// type constraint on the generic type T, generic type can be either a number or a string.
+
+function processValue<T extends number | string>(value: T): T {
+  console.log(value);
+}
+
+processValue("hello");
+processValue(12);
+processValue(true);
