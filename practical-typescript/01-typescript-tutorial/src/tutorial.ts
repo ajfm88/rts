@@ -1666,7 +1666,7 @@ function processValue<T extends number | string>(value: T): T {
 processValue("hello");
 processValue(12);
 processValue(true);
-*/
+
 // ## Generics - Type Constraints 2
 type Car = {
   brand: string;
@@ -1720,3 +1720,38 @@ function printName<T extends { name: string }>(input: T): void {
 
 printName(student);
 printName(product);
+*/
+// ## Generics - Default Value
+interface StoreData<T = any> {
+  data: T[];
+}
+
+const storeNumbers: StoreData<number> = {
+  data: [1, 2, 3, 4],
+};
+
+const randomStuff: StoreData = {
+  data: ["random", 1],
+};
+
+// data is located in the data property
+
+const { data } = axios.get(someUrl);
+
+axios.get<{ name: string }[]>(someUrl);
+
+export class Axios {
+  get<T = any, R = AxiosResponse<T>, D = any>(
+    url: string,
+    config?: AxiosRequestConfig<D>
+  ): Promise<R>;
+}
+
+export interface AxiosResponse<T = any, D = any> {
+  data: T;
+  status: number;
+  statusText: string;
+  headers: RawAxiosResponseHeaders | AxiosResponseHeaders;
+  config: InternalAxiosRequestConfig<D>;
+  request?: any;
+}
