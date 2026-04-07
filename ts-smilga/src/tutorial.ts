@@ -1,43 +1,54 @@
 /*
-## Objects - Fundamentals
+## Functions - Fundamentals
 
-In TypeScript, an object is a collection of key-value pairs with specified types for each key, 
-providing static type checking for properties.
+In TypeScript, functions can have typed parameters and return values, which provides static type checking and autocompletion support.
 */
-let car: { brand: string; year: number } = { brand: "toyota", year: 2020 };
+function sayHi(name: string) {
+  console.log(`Hello there ${name.toUpperCase()}`);
+}
 
-car.brand = "ford";
-// car.color = 'blue'
+sayHi("Alex");
+// sayHi(3);
 
-let car1: { brand: string; year: number } = { brand: "audi", year: 2022 };
+function calculateDiscount(price: number): number {
+  const hasDiscount = true;
 
-let book = { title: "book", cost: 20 };
-let pen = { title: "pen", cost: 10 };
-let notebook = { title: "notebook" };
+  if (hasDiscount) {
+    return price;
+    // return "Discount Applied";
+  }
 
-let items: { readonly title: string; cost?: number }[] = [book, pen, notebook];
-// items[0].title = "new book"; // Error: Cannot assign to 'title' because it is a read-only property
+  return price * 0.9;
+}
 
-/*
-## Challenge
-- Create an object bike of type { brand: string, year: number } and assign it some values. 
-Then, try to assign a string to the year property.
-- Create an object laptop of type { brand: string, year: number } and try to assign an object 
-with missing year property to it.
-- Create an array products of type { title: string, price?: number }[] and assign it some values. 
-Then, try to add an object with a price property of type string to it.
-*/
+const finalPrice = calculateDiscount(200);
+console.log(finalPrice);
 
-// 1. Bike
-let bike: { brand: string; year: number } = { brand: "Yamaha", year: 2010 };
-// bike.year = 'a string' // This will result in a TypeScript error
+// "any" example
+function addThree(number: any) {
+  let anotherNumber: number = 3;
+  return number + anotherNumber;
+}
+const result = addThree(2);
+const someValue = result;
 
-// 2. Laptop
-let laptop: { brand: string; year: number } = { brand: "Dell", year: 2020 };
-// let laptop2: { brand: string; year: number } = { brand: "HP" }; // This will result in a TypeScript error
+// run time error
+someValue.myMethod();
 
-// 3. Products
-let product1 = { title: "Shirt", price: 20 };
-let product2 = { title: "Pants" };
-let products: { title: string; price?: number }[] = [product1, product2];
-// products.push({ title: "socks", price: "expensive" }); // This will result in a TypeScript error
+// ## Challenge
+
+// Create a new array of names.
+const names: string[] = ["Mark", "Jane", "Jim", "Jill"];
+
+// Write a new function that checks if a name is in your array. This function should take a name as a parameter and return a boolean.
+function isNameInList(name: string): boolean {
+  return names.includes(name);
+}
+
+// Use this function to check if various names are in your array and log the results.
+let nameToCheck: string = "Jane";
+if (isNameInList(nameToCheck)) {
+  console.log(`${nameToCheck} is in the list.`);
+} else {
+  console.log(`${nameToCheck} is not in the list.`);
+}
