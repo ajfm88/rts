@@ -1,54 +1,78 @@
 /*
-## Functions - Fundamentals
+## Functions - Optional and Default Parameters
 
-In TypeScript, functions can have typed parameters and return values, which provides static type checking and autocompletion support.
+In TypeScript, a default parameter value is an alternative to an optional parameter. 
+When you provide a default value for a parameter, you're essentially making it optional 
+because you're specifying a value that the function will use if no argument is provided 
+for that parameter.
+
+However, there's a key difference between a parameter with a default value and an optional 
+parameter. If a parameter has a default value, and you call the function without providing 
+an argument for that parameter, the function will use the default value. But if a parameter 
+is optional (indicated with a ?), and you call the function without providing an argument 
+for that parameter, the value of the parameter inside the function will be undefined.
+
+- a function with optional parameters must work when they are not supplied
 */
-function sayHi(name: string) {
-  console.log(`Hello there ${name.toUpperCase()}`);
+function calculatePrice(price: number, discount?: number) {
+  return price - (discount || 0);
 }
 
-sayHi("Alex");
-// sayHi(3);
+let priceAfterDiscount = calculatePrice(100, 20);
+console.log(priceAfterDiscount); // Output: 80
 
-function calculateDiscount(price: number): number {
-  const hasDiscount = true;
+let priceWithoutDiscount = calculatePrice(300);
+console.log(priceWithoutDiscount); // Output: 300
 
-  if (hasDiscount) {
-    return price;
-    // return "Discount Applied";
-  }
-
-  return price * 0.9;
+function calculateScore(initialScore: number, penaltyPoints: number = 0) {
+  return initialScore - penaltyPoints;
 }
 
-const finalPrice = calculateDiscount(200);
-console.log(finalPrice);
+let scoreAfterPenalty = calculateScore(100, 20);
+console.log(scoreAfterPenalty); // Output: 80
 
-// "any" example
-function addThree(number: any) {
-  let anotherNumber: number = 3;
-  return number + anotherNumber;
+let scoreWithoutPenalty = calculateScore(300);
+console.log(scoreWithoutPenalty); // Output: 300
+
+/*
+## Function - rest parameter
+
+In JavaScript, a rest parameter is denoted by three dots (...) before the parameter's name 
+and allows a function to accept any number of arguments. These arguments are collected into 
+an array, which can be accessed within the function.
+*/
+function sum(message: string, ...numbers: number[]): string {
+  const doubled = numbers.map((num) => num * 2);
+  console.log(doubled);
+
+  let total = numbers.reduce((previous, current) => {
+    return previous + current;
+  }, 0);
+  return `${message} ${total}`;
 }
-const result = addThree(2);
-const someValue = result;
 
-// run time error
-someValue.myMethod();
+let result = sum("The total is:", 1, 2, 3, 4, 5); // result will be "The total is: 15"
 
-// ## Challenge
+/*
+## Functions - "void" return type
 
-// Create a new array of names.
-const names: string[] = ["Mark", "Jane", "Jim", "Jill"];
-
-// Write a new function that checks if a name is in your array. This function should take a name as a parameter and return a boolean.
-function isNameInList(name: string): boolean {
-  return names.includes(name);
+In TypeScript, void is a special type that represents the absence of a value. When used as a 
+function return type, void indicates that the function does not return a value.
+*/
+function logMessage(message: string): void {
+  console.log(message);
 }
 
-// Use this function to check if various names are in your array and log the results.
-let nameToCheck: string = "Jane";
-if (isNameInList(nameToCheck)) {
-  console.log(`${nameToCheck} is in the list.`);
-} else {
-  console.log(`${nameToCheck} is not in the list.`);
+logMessage("Hello, TypeScript!"); // Output: Hello, TypeScript!
+
+/*
+It's important to note that in TypeScript, a function that is declared with a void return 
+type can still return a value, but the value will be ignored.For example, the following 
+code is valid TypeScript:
+*/
+function logMessage2(message: string): void {
+  console.log(message);
+  return "This value is ignored";
 }
+
+logMessage2("Hello, TypeScript!"); // Output: Hello, TypeScript!
