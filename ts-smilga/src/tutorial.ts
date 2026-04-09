@@ -1,78 +1,117 @@
 /*
-## Functions - Optional and Default Parameters
+## Functions - Using Union Types as Function Parameters
 
-In TypeScript, a default parameter value is an alternative to an optional parameter. 
-When you provide a default value for a parameter, you're essentially making it optional 
-because you're specifying a value that the function will use if no argument is provided 
-for that parameter.
+### Challenge
 
-However, there's a key difference between a parameter with a default value and an optional 
-parameter. If a parameter has a default value, and you call the function without providing 
-an argument for that parameter, the function will use the default value. But if a parameter 
-is optional (indicated with a ?), and you call the function without providing an argument 
-for that parameter, the value of the parameter inside the function will be undefined.
+Your task is to create a function named processInput that accepts a 
+parameter of a union type string | number. The function should behave 
+as follows:
 
-- a function with optional parameters must work when they are not supplied
+- If the input is of type number, the function should multiply the 
+number by 2 and log the result to the console.
+- If the input is of type string, the function should convert the 
+string to uppercase and log the result to the console.
 */
-function calculatePrice(price: number, discount?: number) {
-  return price - (discount || 0);
+
+function processInput(input: string | number) {
+  if (typeof input === "number") {
+    console.log(input * 2);
+  } else {
+    console.log(input.toUpperCase());
+  }
 }
 
-let priceAfterDiscount = calculatePrice(100, 20);
-console.log(priceAfterDiscount); // Output: 80
+processInput(10); // Output: 20
+processInput("Hello"); // Output: HELLO
 
-let priceWithoutDiscount = calculatePrice(300);
-console.log(priceWithoutDiscount); // Output: 300
-
-function calculateScore(initialScore: number, penaltyPoints: number = 0) {
-  return initialScore - penaltyPoints;
-}
-
-let scoreAfterPenalty = calculateScore(100, 20);
-console.log(scoreAfterPenalty); // Output: 80
-
-let scoreWithoutPenalty = calculateScore(300);
-console.log(scoreWithoutPenalty); // Output: 300
+// In this example, the processInput function takes a parameter input that
+// can be either a string or a number. Inside the function, we use a type
+// guard (typeof input === 'number') to check the type of input at runtime.
+// If input is a number, we double it. If input is a string, we convert it
+// to uppercase.
 
 /*
-## Function - rest parameter
-
-In JavaScript, a rest parameter is denoted by three dots (...) before the parameter's name 
-and allows a function to accept any number of arguments. These arguments are collected into 
-an array, which can be accessed within the function.
+## Functions - Using Objects as Function Parameters
 */
-function sum(message: string, ...numbers: number[]): string {
-  const doubled = numbers.map((num) => num * 2);
-  console.log(doubled);
-
-  let total = numbers.reduce((previous, current) => {
-    return previous + current;
-  }, 0);
-  return `${message} ${total}`;
+function createEmployee({ id }: { id: number }): {
+  id: number;
+  isActive: boolean;
+} {
+  return { id, isActive: id % 2 === 0 };
 }
 
-let result = sum("The total is:", 1, 2, 3, 4, 5); // result will be "The total is: 15"
+const first = createEmployee({ id: 1 });
+const second = createEmployee({ id: 2 });
+console.log(first, second);
+
+// alternative
+function createStudent(student: { id: number; name: string }) {
+  console.log(`Welcome to the course ${student.name.toUpperCase()}!!!`);
+}
+
+const newStudent = {
+  id: 5,
+  name: "anna",
+};
+
+createStudent(newStudent);
 
 /*
-## Functions - "void" return type
-
-In TypeScript, void is a special type that represents the absence of a value. When used as a 
-function return type, void indicates that the function does not return a value.
+## Gotcha - Excess Property Checks
 */
-function logMessage(message: string): void {
-  console.log(message);
+function createStudent(student: { id: number; name: string }) {
+  console.log(`Welcome to the course ${student.name.toUpperCase()}!!!`);
 }
 
-logMessage("Hello, TypeScript!"); // Output: Hello, TypeScript!
+const newStudent = {
+  id: 5,
+  name: "anna",
+  email: "anna@gmail.com",
+};
+
+createStudent(newStudent);
+createStudent({ id: 1, name: "bob", email: "bob@gmail.com" });
 
 /*
-It's important to note that in TypeScript, a function that is declared with a void return 
-type can still return a value, but the value will be ignored.For example, the following 
-code is valid TypeScript:
+TypeScript only performs excess property checks on object literals where they're used, 
+not on references to them.
+
+In TypeScript, when you pass an object literal (like { id: 1, name: 'bob', email: 'bob@gmail.com' }) 
+directly to a function or assign it to a variable with a specified type, TypeScript checks that 
+the object only contains known properties. This is done to catch common errors.
+
+However, when you pass newStudent to createStudent, TypeScript doesn't complain about 
+the email property. This is because newStudent is not an object literal at the point 
+where it's passed to createStudent.
 */
-function logMessage2(message: string): void {
-  console.log(message);
-  return "This value is ignored";
+
+/*
+## Challenge
+
+Your task is to create a function named processData that accepts two parameters:
+
+- The first parameter, input, should be a union type that can be either a string or a number.
+- The second parameter, config, should be an object with a reverse property of type boolean, by 
+default it "reverse" should be false
+
+The function should behave as follows:
+
+- If input is of type number, the function should return the square of the number.
+- If input is of type string, the function should return the string in uppercase.
+- If the reverse property on the config object is true, and input is a string, the function should 
+return the reversed string in uppercase.
+*/
+function processData(
+  input: string | number,
+  config: { reverse: boolean } = { reverse: false },
+): string | number {
+  if (typeof input === "number") {
+    return input * input;
+  } else {
+    return config.reverse ? input.toUpperCase().split("").reverse().join("") : input.toUpperCase();
+  }
 }
 
-logMessage2("Hello, TypeScript!"); // Output: Hello, TypeScript!
+console.log(processData(10)); // Output: 100
+console.log(processData("Hello")); // Output: HELLO
+console.log(processData("Hello", { reverse: true })); // Output: OLLEH
