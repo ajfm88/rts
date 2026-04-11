@@ -1,100 +1,42 @@
 /*
-## Type Alias
+## Intersection Types
 
-A type alias in TypeScript is a new name or shorthand for an existing type, making it easier to reuse complex types. 
-However, it's important to note that it doesn't create a new unique type - it's just an alias.All the same rules apply 
-to the aliased type, including the ability to mark properties as optional or readonly.
+In TypeScript, an intersection type (TypeA & TypeB) is a way of combining multiple types into one. 
+This means that an object of an intersection type will have all the properties of TypeA and all the 
+properties of TypeB. It's a way of creating a new type that merges the properties of existing types.
 */
-/*
-With no Type Alias
-*/
-const jack: { id: number; name: string; isActive: boolean } = {
-  id: 1,
-  name: "jack",
-  isActive: true,
-};
-const sally: { id: number; name: string; isActive: boolean } = {
-  id: 1,
-  name: "sally",
-  isActive: false,
+type Book = { id: number; name: string; price: number };
+type DiscountedBook = Book & { discount: number };
+
+const book1: Book = {
+  id: 2,
+  name: "How to Cook a Dragon",
+  price: 15,
 };
 
-function createUserNoTypeAlias(user: { id: number; name: string; isActive: boolean }): {
-  id: number;
-  name: string;
-  isActive: boolean;
-} {
-  console.log(`Hello there ${user.name.toUpperCase()} !!!`);
-
-  return user;
-}
-/*
-With Type Alias
-*/
-type User = { id: number; name: string; isActive: boolean };
-
-const john: User = {
-  id: 1,
-  name: "john",
-  isActive: true,
-};
-const susan: User = {
-  id: 1,
-  name: "susan",
-  isActive: false,
+const book2: Book = {
+  id: 3,
+  name: "The Secret Life of Unicorns",
+  price: 18,
 };
 
-function createUser(user: User): User {
-  console.log(`Hello there ${user.name.toUpperCase()} !!!`);
-  return user;
-}
+const discountedBook: DiscountedBook = {
+  id: 4,
+  name: "Gnomes vs. Goblins: The Ultimate Guide",
+  price: 25,
+  discount: 0.15,
+};
+
 /*
-Type Alias - Additional info
+## Type Alias - Computed Properties
+
+Computed properties in JavaScript are a feature that allows you to dynamically create property keys on objects. 
+This is done by wrapping an expression in square brackets [] that computes the property name when creating an object.
 */
-type StringOrNumber = string | number; // Type alias for string | number
+const propName = "age";
 
-let value: StringOrNumber;
-value = "hello"; // This is valid
-value = 123; // This is also valid
+type Animal = {
+  [propName]: number;
+};
 
-type Theme = "light" | "dark"; // Type alias for theme
-
-let theme: Theme;
-theme = "light"; // This is valid
-theme = "dark"; // This is also valid
-
-// Function that accepts the Theme type alias
-function setTheme(t: Theme) {
-  theme = t;
-}
-
-setTheme("dark"); // This will set the theme to 'dark'
-/*
-Type Alias Challenge
-*/
-// - Define the Employee type: Create a type Employee with properties id (number), name (string), and department (string).
-type Employee = { id: number; name: string; department: string };
-// - Define the Manager type: Create a type Manager with properties id (number), name (string), and employees (an array of Employee).
-type Manager = { id: number; name: string; employees: Employee[] };
-// - Create a Union Type: Define a type Staff that is a union of Employee and Manager.
-type Staff = Employee | Manager;
-// - Create the printStaffDetails function: This function should accept a parameter of type Staff.
-function printStaffDetails(staff: Staff) {
-  //  Inside the function, use a type guard to check if the 'employees' property exists in the passed object.
-  if ("employees" in staff) {
-    //  If it does, print a message indicating that the person is a manager and the number of employees they manage.
-    console.log(`${staff.name} is a manager of ${staff.employees.length} employees.`);
-  } else {
-    //  If it doesn't, print a message indicating that the person is an employee and the department they belong to.
-    console.log(`${staff.name} is an employee in the ${staff.department} department.`);
-  }
-}
-
-// - Create Employee and Manager objects: Create two Employee objects. One named alice and second named steve.
-const alice: Employee = { id: 1, name: "Alice", department: "Sales" };
-const steve: Employee = { id: 1, name: "Steve", department: "HR" };
-//  Also create a Manager object named bob who manages alice and steve.
-const bob: Manager = { id: 2, name: "Bob", employees: [alice, steve] };
-// - Test the function: Call the printStaffDetails function with alice and bob as arguments and verify the output.
-printStaffDetails(alice); // Outputs: Alice is an employee in the Sales department.
-printStaffDetails(bob);
+let tiger: Animal = { [propName]: 5 };
