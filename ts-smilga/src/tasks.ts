@@ -1,42 +1,67 @@
-/*
-## Intersection Types
+const taskForm = document.querySelector<HTMLFormElement>('.form');
+const formInput = document.querySelector<HTMLInputElement>('.form-input');
 
-In TypeScript, an intersection type (TypeA & TypeB) is a way of combining multiple types into one. 
-This means that an object of an intersection type will have all the properties of TypeA and all the 
-properties of TypeB. It's a way of creating a new type that merges the properties of existing types.
-*/
-type Book = { id: number; name: string; price: number };
-type DiscountedBook = Book & { discount: number };
+const taskListElement = document.querySelector<HTMLUListElement>('.list');
 
-const book1: Book = {
-  id: 2,
-  name: "How to Cook a Dragon",
-  price: 15,
+type Task = {
+  description: string;
+  isCompleted: boolean;
 };
 
-const book2: Book = {
-  id: 3,
-  name: "The Secret Life of Unicorns",
-  price: 18,
-};
+const tasks: Task[] = loadTasks();
 
-const discountedBook: DiscountedBook = {
-  id: 4,
-  name: "Gnomes vs. Goblins: The Ultimate Guide",
-  price: 25,
-  discount: 0.15,
-};
+tasks.forEach(renderTask);
 
-/*
-## Type Alias - Computed Properties
+function loadTasks(): Task[] {
+  const storedTasks = localStorage.getItem('tasks');
+  return storedTasks ? JSON.parse(storedTasks) : [];
+}
 
-Computed properties in JavaScript are a feature that allows you to dynamically create property keys on objects. 
-This is done by wrapping an expression in square brackets [] that computes the property name when creating an object.
-*/
-const propName = "age";
+taskForm?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const taskDescription = formInput?.value;
+  if (taskDescription) {
+    const task: Task = {
+      description: taskDescription,
+      isCompleted: false,
+    };
+    // add task to list
+    addTask(task);
+    // render tasks
+    renderTask(task);
+    // update local storage
+    updateStorage();
+    formInput.value = '';
+    return;
+  }
+  alert('Please enter a task description');
+});
 
-type Animal = {
-  [propName]: number;
-};
+function addTask(task: Task): void {
+  tasks.push(task);
+  console.log(tasks);
+}
 
-let tiger: Animal = { [propName]: 5 };
+function renderTask(task: Task): void {
+  const taskElement = document.createElement('li');
+  taskElement.textContent = task.description;
+
+  // checkbox
+  const taskCheckbox = document.createElement('input');
+  taskCheckbox.type = 'checkbox';
+  taskCheckbox.checked = task.isCompleted;
+
+  // toggle checkbox
+
+  taskCheckbox.addEventListener('change', () => {
+    task.isCompleted = !task.isCompleted;
+    updateStorage();
+  });
+
+  taskElement.appendChild(taskCheckbox);
+  taskListElement?.appendChild(taskElement);
+}
+
+function updateStorage(): void {
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
