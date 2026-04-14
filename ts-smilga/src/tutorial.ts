@@ -1,91 +1,120 @@
 /*
-## Interface - Methods (more options)
-It's generally a good practice to match the structure of the interface and the implementing 
-object or class as closely as possible. This makes the code easier to understand and maintain.
-So, if printAuthor is defined as a method in the Book interface, it would be more consistent 
-to implement it as a method in the deepWork object.
+## Interface - Merging, Extend, TypeGuard
 */
-interface Book {
-  readonly isbn: number;
-  title: string;
-  author: string;
-  genre?: string;
-  // method
-  printAuthor(): void;
-  printTitle(message: string): string;
-  printSomething: (someValue: number) => number;
+interface Person {
+  name: string;
+  getDetails(): string;
 }
 
-const deepWork: Book = {
-  isbn: 9781455586691,
-  title: "Deep Work",
-  author: "Cal Newport",
-  genre: "Self-help",
-  printAuthor() {
-    console.log(this.author);
-  },
-  printTitle(message) {
-    return `${this.title} ${message}`;
-  },
-  // first option
-  // printSomething: function (someValue) {
-  //   return someValue;
-  // },
-  // second option
-  printSomething: (someValue) => {
-    // "this" gotcha
-    console.log(deepWork.author);
-    return someValue;
-  },
-  // third option
-  // printSomething(someValue) {
-  //   return someValue;
-  // },
-  // alternative
-  // printAuthor: () => {
-  //   console.log(deepWork.author);
-  // },
-};
-console.log(deepWork.printSomething(34));
+interface DogOwner {
+  dogName: string;
+  getDogDetails(): string;
+}
 
-deepWork.printAuthor();
-const result = deepWork.printTitle("is an awesome book");
-console.log(result);
+// Merging (reopening) an interface in TypeScript is a process where you declare an
+// interface with the same name more than once, and TypeScript will merge their members.
+
+// Merging the interface
+interface Person {
+  age: number;
+}
+
+// Usage
+const person: Person = {
+  name: "John",
+  age: 30,
+  getDetails() {
+    return `Name: ${this.name}, Age: ${this.age}`;
+  },
+};
+
+// Extending an interface in TypeScript is a way to create a new interface that inherits
+// the properties and methods of an existing interface. You use the extends keyword to
+// do this. When you extend an interface, the new interface will have all the members
+// of the base interface, plus any new members that you add.
+
+// Extending the interface
+interface Employee extends Person {
+  employeeId: number;
+}
+
+const employee2: Employee = {
+  name: "jane",
+  age: 28,
+  employeeId: 123,
+  getDetails() {
+    return `Name: ${this.name}, Age: ${this.age}, Employee ID: ${this.employeeId}`;
+  },
+};
+
+// Interface multiple inheritance
+interface Manager extends Person, DogOwner {
+  managePeople(): void;
+}
+
+const manager2: Manager = {
+  name: "Bob",
+  age: 35,
+  dogName: "Rex",
+  getDetails() {
+    return `Name: ${this.name}, Age: ${this.age}`;
+  },
+  getDogDetails() {
+    return `Dog Name: ${this.dogName}`;
+  },
+  managePeople() {
+    console.log("Managing people...");
+  },
+};
 
 /*
-## Challenge
+## Challenge - Part 1
 */
 
-// - Start by defining an interface Computer using the interface keyword.
-// This will serve as a blueprint for objects that will be of this type.
-interface Computer {
-  // - Inside the interface, define the properties that the object should have. In this case, we have id, brand, ram, and storage.
-
-  // - Use the readonly keyword before the id property to indicate that it cannot be changed once it's set.
-  readonly id: number; // cannot be changed once initialized
-  brand: string;
-  ram: number;
-  // - Use the ? after the storage property to indicate that this property is optional and may not exist on all objects of this type.
-  storage?: number; // optional property
-  // - Also inside the interface, define any methods that the object should have.
-  // In this case, we have upgradeRam, which is a function that takes a number and returns a number.
-  upgradeRam(increase: number): number;
+//Define the Person interface: Start by defining a Person interface with a name property of type string.
+interface Person {
+  name: string;
 }
 
-// - Now that we have our interface, we can create an object that adheres to this interface.
-// This object should have all the properties defined in the interface
-// (except for optional ones, which are... optional), and the methods should be implemented.
-const laptop: Computer = {
-  id: 1,
-  brand: "random brand",
-  ram: 8, // in GB
-  upgradeRam(amount: number) {
-    this.ram += amount;
-    return this.ram;
-  },
-};
-laptop.storage = 256; // assigning value to optional property
+//Define the DogOwner interface: Next, define a DogOwner interface that extends Person and adds a
+//dogName property of type string.
+interface DogOwner extends Person {
+  dogName: string;
+}
 
-// - Finally, we can use our object. We can call its upgradeRam method to increase its RAM.
-console.log(laptop.upgradeRam(4)); // upgrades RAM by 4GB
-console.log(laptop);
+//Define the Manager interface: Then, define a Manager interface that extends Person and adds two methods:
+// managePeople and delegateTasks. Both methods should have a return type of void.
+interface Manager extends Person {
+  managePeople(): void;
+  delegateTasks(): void;
+}
+
+//Define the getEmployee function: Now, define a function called getEmployee that returns a Person, DogOwner, or Manager.
+// Inside this function, generate a random number and use it to decide which type of object to return.
+// If the number is less than 0.33, return a Person. If it's less than 0.66, return a DogOwner.
+// Otherwise, return a Manager.
+function getEmployee(): Person | DogOwner | Manager {
+  const random = Math.random();
+
+  if (random < 0.33) {
+    return {
+      name: "mark",
+    };
+  } else if (random < 0.66) {
+    return {
+      name: "sarah",
+      dogName: "Rex",
+    };
+  } else {
+    return {
+      name: "bob",
+      managePeople: () => console.log("Managing people..."),
+      delegateTasks: () => console.log("Delegating tasks..."),
+    };
+  }
+}
+
+//Finally, create a variable called employee that can be a Person, DogOwner, or Manager, and assign it the return value of getEmployee.
+// Then, log employee to the console.
+const employee: Person | DogOwner | Manager = getEmployee();
+console.log(employee);
