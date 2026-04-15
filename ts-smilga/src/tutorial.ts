@@ -118,3 +118,102 @@ function getEmployee(): Person | DogOwner | Manager {
 // Then, log employee to the console.
 const employee: Person | DogOwner | Manager = getEmployee();
 console.log(employee);
+
+/*
+## Challenge - Part 2
+
+A type predicate in TypeScript is a special kind of return type for a function that not only returns a boolean, 
+but also asserts that the argument is of a specific type if the function returns true. It's typically used in 
+user-defined type guard functions to narrow down the type of a variable within a certain scope. 
+The syntax is arg is Type, where arg is the function argument and Type is the type you're checking for.
+*/
+
+// function isManager(obj: Person | DogOwner | Manager): boolean {
+//   return 'managePeople' in obj;
+// }
+
+// - Define the isManager function: Define a function called isManager that takes an object of type Person | DogOwner | Manager
+// and returns a boolean. This function should check if the managePeople method exists on the object, and return true if it does
+// and false if it doesn't. The return type of this function should be a type predicate: obj is Manager.
+function isManager(obj: Person | DogOwner | Manager): obj is Manager {
+  return "managePeople" in obj;
+}
+//- Run your code to see if it works as expected. If employee is a Manager, you should see the output
+// of the delegateTasks method in the console. If employee is a Person or DogOwner, there should be no output.
+if (isManager(employee)) {
+  employee.delegateTasks();
+}
+
+/*
+## Interface vs Type Alias
+
+A type alias is a way to give a name to a type. It can represent primitive types, union types, intersection types, tuples, 
+and any other types. Once defined, the alias can be used anywhere in place of the actual type.
+*/
+
+type Person2 = {
+  name: string;
+  age: number;
+};
+
+let jack: Person2 = { name: "Jack", age: 30 };
+
+// Interface
+
+// An interface is a way to define a contract for a certain structure of an object.
+
+interface Person {
+  name: string;
+  age: number;
+}
+
+let jill: Person = { name: "Jill", age: 30 };
+
+// Key Differences
+
+// - Type aliases can represent primitive types, union types, intersection types, tuples, etc.,
+// while interfaces are primarily used to represent the shape of an object.
+
+// Type alias for a primitive type
+type Score = number;
+type NumberOrString = number | string;
+// Type alias for literal types
+type Direction = "up" | "down" | "left" | "right";
+
+// Using the type aliases
+let gameScore: Score = 100;
+let move: Direction = "up";
+
+// - Interfaces can be merged using declaration merging. If you define an interface with the same name more than once,
+// TypeScript will merge their definitions. Type aliases can't be merged in this way.
+
+// - Interfaces can be implemented by classes, while type aliases cannot.
+// - Type aliases can use computed properties, while interfaces cannot.
+
+interface Person {
+  name: string;
+  greet(): void;
+}
+
+class Employee implements Person {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+
+  greet() {
+    console.log(`Hello, my name is ${this.name}`);
+  }
+}
+
+let john = new Employee("John");
+john.greet(); // Outputs: Hello, my name is John
+
+const propName = "age";
+
+type Animal = {
+  [propName]: number;
+};
+
+let tiger: Animal = { [propName]: 5 };
