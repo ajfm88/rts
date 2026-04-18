@@ -1,120 +1,47 @@
 /*
-## Enums
+## Type Assertion
 
-Enums in TypeScript allow us to define a set of named constants. 
-Using enums can make it easier to document intent, or create a set of distinct cases.
+Type assertion in TypeScript is a way to tell the compiler what the type of an 
+existing variable is. This is especially useful when you know more about the 
+type of a variable than TypeScript does.
 */
-enum ServerResponseStatus {
-  Success = 200,
-  Error = "Error",
-}
+let someValue: any = "This is a string";
 
-interface ServerResponse {
-  result: ServerResponseStatus;
-  data: string[];
-}
+// Using type assertion to treat 'someValue' as a string
+let strLength: number = (someValue as string).length;
 
-function getServerResponse(): ServerResponse {
-  return {
-    result: ServerResponseStatus.Success,
-    data: ["first item", "second item"],
-  };
-}
-
-const response: ServerResponse = getServerResponse();
-console.log(response);
-
-/*
-## Enums - Gotcha : Reverse Mapping
-
-In a numeric enum, TypeScript creates a reverse mapping from the numeric 
-values to the enum member names. 
-This means that if you assign a numeric value to an enum member, 
-you can use that numeric value anywhere the enum type is expected.
-
-In a string enum, TypeScript does not create a reverse mapping. 
-This means that if you assign a string value to an enum member, 
-you cannot use that string value anywhere the enum type is expected. 
-You must use the enum member itself.
-*/
-enum ServerResponseStatus2 {
-  Success = "Success",
-  Error = "Error",
-}
-
-Object.values(ServerResponseStatus2).forEach((value) => {
-  console.log(value);
-});
-
-enum ServerResponseStatus3 {
-  Success = 200,
-  Error = 500,
-}
-
-Object.values(ServerResponseStatus3).forEach((value) => {
-  if (typeof value === "number") {
-    console.log(value);
-  }
-});
-
-enum NumericEnum {
-  Member = 1,
-}
-
-enum StringEnum {
-  Member = "Value",
-}
-
-let numericEnumValue: NumericEnum = 1; // This is allowed
-console.log(numericEnumValue); // 1
-
-let stringEnumValue: StringEnum = "Value"; // This is not allowed
-
-enum ServerResponseStatus4 {
-  Success = "Success",
-  Error = "Error",
-}
-
-function getServerResponse2(): ServerResponse {
-  return {
-    // result: ServerResponseStatus4.Success,
-    // this will not fly with string enum but ok with number
-    result: "Success",
-    data: ["first item", "second item"],
-  };
-}
-
-/*
-## Challenge
-*/
-
-// - Define an enum named UserRole with members Admin, Manager, and Employee.
-enum UserRole {
-  Admin,
-  Manager,
-  Employee,
-}
-
-// - Define a type alias named User with properties id (number), name (string), role (UserRole),
-// and contact (a tuple with two elements: email as string and phone as string).
-type User = {
-  id: number;
+type Bird = {
   name: string;
-  role: UserRole;
-  contact: [string, string]; // Tuple: [email, phone]
 };
 
-// - Define a function named createUser that takes a User object as its parameter and returns a User object.
-function createUser(user: User): User {
-  return user;
+// Assume we have a JSON string from an API or local file
+let birdString = '{"name": "Eagle"}';
+let dogString = '{"breed": "Poodle"}';
+
+//
+
+// Parse the JSON string into an object
+let birdObject = JSON.parse(birdString);
+let dogObject = JSON.parse(dogString);
+
+// We're sure that the jsonObject is actually a Bird
+let bird = birdObject as Bird;
+let dog = dogObject as Bird;
+
+console.log(bird.name);
+console.log(dog.name);
+
+enum Status {
+  Pending = "pending",
+  Declined = "declined",
 }
 
-// - Call the createUser function with an object that matches the User type, store the result in a variable, and log the variable to the console.
-const user: User = createUser({
-  id: 1,
-  name: "John Doe",
-  role: UserRole.Admin,
-  contact: ["john.doe@example.com", "123-456-7890"],
-});
+type User = {
+  name: string;
+  status: Status;
+};
+// save Status.Pending in the DB as a string
+// retrieve string from the DB
+const statusValue = "pending";
 
-console.log(user);
+const user: User = { name: "jack", status: statusValue as Status };
