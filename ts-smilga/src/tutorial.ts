@@ -1,47 +1,92 @@
 /*
-## Type Assertion
+## Type - 'unknown'
 
-Type assertion in TypeScript is a way to tell the compiler what the type of an 
-existing variable is. This is especially useful when you know more about the 
-type of a variable than TypeScript does.
+The unknown type in TypeScript is a type-safe counterpart of the any type. 
+It's like saying that a variable could be anything, but we need to perform 
+some type-checking before we can use it.
+
+"error instanceof Error" checks if the error object is an instance of the Error class.
 */
-let someValue: any = "This is a string";
+let unknownValue: unknown;
 
-// Using type assertion to treat 'someValue' as a string
-let strLength: number = (someValue as string).length;
+// Assign different types of values to unknownValue
+unknownValue = "Hello World"; // OK
+unknownValue = [1, 2, 3]; // OK
+unknownValue = 42.3344556; // OK
 
-type Bird = {
-  name: string;
-};
+// unknownValue.toFixed( ); // Error: Object is of type 'unknown'
 
-// Assume we have a JSON string from an API or local file
-let birdString = '{"name": "Eagle"}';
-let dogString = '{"breed": "Poodle"}';
-
-//
-
-// Parse the JSON string into an object
-let birdObject = JSON.parse(birdString);
-let dogObject = JSON.parse(dogString);
-
-// We're sure that the jsonObject is actually a Bird
-let bird = birdObject as Bird;
-let dog = dogObject as Bird;
-
-console.log(bird.name);
-console.log(dog.name);
-
-enum Status {
-  Pending = "pending",
-  Declined = "declined",
+// Now, let's try to use unknownValue
+if (typeof unknownValue === "number") {
+  // TypeScript knows that unknownValue is a string in this block
+  console.log(unknownValue.toFixed(2)); // OK
 }
 
-type User = {
-  name: string;
-  status: Status;
-};
-// save Status.Pending in the DB as a string
-// retrieve string from the DB
-const statusValue = "pending";
+function runSomeCode() {
+  const random = Math.random();
+  if (random < 0.5) {
+    throw new Error("Something went wrong");
+  } else {
+    throw "some error";
+  }
+}
 
-const user: User = { name: "jack", status: statusValue as Status };
+try {
+  runSomeCode();
+} catch (error) {
+  if (error instanceof Error) {
+    console.log(error.message);
+  } else {
+    console.log(error);
+    console.log("there was an error....");
+  }
+}
+
+/*
+## Type - "never"
+
+In TypeScript, never is a type that represents the type of values that 
+never occur.you can't assign any value to a variable of type never.
+TypeScript will give a compile error if there are any unhandled cases, 
+helping ensure that all cases are handled.
+*/
+// let someValue: never = 0;
+
+type Theme = "light" | "dark";
+
+function checkTheme(theme: Theme) {
+  if (theme === "light") {
+    console.log("light theme");
+    return;
+  }
+  if (theme === "dark") {
+    console.log("dark theme");
+    return;
+  }
+  theme;
+  // theme is of type never, because it can never have a value that is not 'light' or 'dark'.
+}
+
+enum Color {
+  Red,
+  Blue,
+  // Green,
+}
+
+function getColorName(color: Color) {
+  switch (color) {
+    case Color.Red:
+      return "Red";
+    case Color.Blue:
+      return "Blue";
+    default:
+      // at build time
+      let unexpectedColor: never = color;
+      // at runtime
+      throw new Error(`Unexpected color value: ${unexpectedColor}`);
+  }
+}
+
+console.log(getColorName(Color.Red)); // Red
+console.log(getColorName(Color.Blue)); // Blue
+// console.log(getColorName(Color.Green)); // Green
