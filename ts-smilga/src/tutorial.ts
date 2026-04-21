@@ -1,12 +1,14 @@
-/*
-## Modules - Global Scope "Gotcha"
+//## Modules - Imports/Exports (including types)
 
-If your TypeScript files aren't modules (i.e., they don't have any import or export statements), 
-they're treated as scripts in the global scope. In this case, declaring the same variable in 
-two different files would cause a conflict.
-*/
-let name = "shakeAdnBake";
+import newStudent, { sayHello, person, type Student } from "./actions";
 
-const susan = "susan";
+sayHello("TypeScript");
+console.log(person);
+console.log(newStudent);
 
-export let something = "something";
+const anotherStudent: Student = {
+  name: "bob",
+  age: 23,
+};
+
+console.log(anotherStudent);
