@@ -1,71 +1,50 @@
 /*
-## Challenge - Type Predicate
+## Challenge - Discriminated Unions and exhaustive check using the never type
 
-A type predicate is a function whose return type is a special kind of type that 
-can be used to narrow down types within conditional blocks.
+A discriminated union in TypeScript is a type that can be one of several 
+different types, each identified by a unique literal property 
+(the discriminator), allowing for type-safe handling of each possible variant.
 */
-
-// - Define the Person and Student types. Student should have a study method.
-type Student = {
-  name: string;
-  study: () => void;
-};
-// Person should have a login method.
-type User = {
-  name: string;
-  login: () => void;
+type IncrementAction = {
+  amount: number;
+  timestamp: number;
+  user: string;
 };
 
-type Person = Student | User;
-
-const randomPerson = (): Person => {
-  return Math.random() > 0.5
-    ? { name: "mark", study: () => console.log("Studying") }
-    : { name: "mary", login: () => console.log("Logging in") };
+type DecrementAction = {
+  amount: number;
+  timestamp: number;
+  user: string;
 };
 
-const person = randomPerson();
+type Action = IncrementAction | DecrementAction;
 
-// - Create a function named isStudent that takes a parameter person of type Person.
-// - In the function signature, specify a return type that is a type predicate: person is Student.
-function isStudent(person: Person): person is Student {
-  // - In the function body, use a type assertion to treat person as a Student,
-  // and check if the study - method is not undefined. This will return true if
-  // person is a Student, and false otherwise.
-  return (person as Student).study !== undefined;
+// - Write a reducer function that takes the current state and an action,
+// and returns the new state. The reducer function should use a switch
+// statement or if-else chain on the type property of the action to
+// handle each action type differently.
+function reducer(state: number, action: Action): number {
+  switch (action.type) {
+    case "increment":
+      return state + action.amount;
+    case "decrement":
+      return state - action.amount;
+    //- In the default case of the switch statement or the final else clause,
+    // perform an exhaustive check by assigning the action to a variable of type never.
+    // If there are any action types that haven't been handled, TypeScript will give a compile error.
+    default:
+      const unexpectedAction: never = action;
+      throw new Error(`Unexpected action: ${unexpectedAction}`);
+  }
 }
 
-// - Use the isStudent function in an if statement with person as the argument.
-if (isStudent(person)) {
-  // - In the if block (where isStudent(person) is true), call the study method on person.
-  // TypeScript knows that person is a Student in this block, so this is safe.
-  person.study(); // This is safe because TypeScript knows that 'person' is a Student.
-} else {
-  // - In the else block (where isStudent(person) is false), call the login method on person.
-  // This is safe because if person is not a Student, it must be a Person, and all Person objects have a login method.
-  person.login();
-}
+const newState = reducer(15, {
+  user: "john",
+  type: "increment",
+  amount: 5,
+  timestamp: 123456,
+});
 
-/*
- ## Optional - type "never" gotcha
-*/
-
-const person2: Person = {
-  name: "anna",
-  study: () => console.log("Studying"),
-  // login: () => console.log('Logging in'),
-};
-// person2;
-function isStudent2(person2: Person): person2 is Student {
-  // return 'study' in person2;
-  return (person2 as Student).study !== undefined;
-}
-
-// Usage
-
-if (isStudent2(person2)) {
-  person2.study(); // This is safe because TypeScript knows that 'person2' is a Student.
-} else {
-  // in this case person2 is type "never"
-  console.log(person2);
-}
+//- Implement the logic for each action type in the reducer function.
+// This typically involves returning a new state based on the current
+// state and the properties of the action.
