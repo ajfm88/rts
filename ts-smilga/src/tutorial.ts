@@ -1,50 +1,47 @@
 /*
-## Generics - Fundamentals
-
-Generics in TypeScript are a way to create reusable code components 
-that work with a variety of types as opposed to a single one.
-
-In other words, generics allow you to write a function or a class 
-that can work with any data type. You can think of generics as a 
-kind of variable for types.
+## Generics - Promise Example
 */
-// In TypeScript, you can declare an array using two syntaxes:
+// A Promise in JavaScript (and thus TypeScript) is an object representing
+// the eventual completion or failure of an asynchronous operation.
 
-let array1: string[] = ["Apple", "Banana", "Mango"];
-let array2: number[] = [1, 2, 3];
-let array3: boolean[] = [true, false, true];
+async function someFunc(): Promise<string> {
+  return "Hello World";
+}
 
-let array4: Array<string> = ["Apple", "Banana", "Mango"];
-let array5: Array<number> = [1, 2, 3];
-let array6: Array<boolean> = [true, false, true];
+const result = someFunc();
 
 /*
-## Generics - Create Generic Function and Interface
+## Generics - Generate Array
 */
-function createString(arg: string): string {
-  return arg;
-}
-function createNumber(arg: number): number {
-  return arg;
-}
 
-// Define a generic function
-function genericFunction<T>(arg: T): T {
-  return arg;
+// generate an array of strings
+function generateStringArray(length: number, value: string): string[] {
+  let result: string[] = [];
+  result = Array(length).fill(value);
+  return result;
 }
 
-const someStringValue = genericFunction<string>("Hello World");
-const someNumberValue = genericFunction<number>(2);
+console.log(generateStringArray(3, "hello"));
 
-// Define a generic interface
-interface GenericInterface<T> {
-  value: T;
-  getValue: () => T;
+function createArray<T>(length: number, value: T): Array<T> {
+  let result: T[] = [];
+  result = Array(length).fill(value);
+  return result;
 }
 
-const genericString: GenericInterface<string> = {
-  value: "Hello World",
-  getValue() {
-    return this.value;
-  },
-};
+let arrayStrings = createArray<string>(3, "hello"); // ["hello", "hello", "hello"]
+let arrayNumbers = createArray<number>(4, 100); // [100, 100, 100, 100]
+
+console.log(arrayStrings);
+console.log(arrayNumbers);
+
+/*
+## Generics - Multiple types
+*/
+function pair<T, U>(param1: T, param2: U): [T, U] {
+  return [param1, param2];
+}
+
+// Usage
+let result2 = pair<number, string>(123, "Hello");
+console.log(result); // Output: [123, "Hello"]
