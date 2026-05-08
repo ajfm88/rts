@@ -1,20 +1,22 @@
 /*
-## Fetch Data
-
-- typically axios and React Query (or both 🚀🚀🚀)
-- we won't set any state values
+## ZOD Library
+- [Zod](https://zod.dev/)
+- [Error Handling in Zod](https://zod.dev/ERROR_HANDLING)
 */
-const url = "https://www.scourse-api.com/react-tours-project";
+import { z } from "zod";
+const url = "https://www.course-api.com/react-tours-project";
 
-// Define a type for the data you're fetching.
-type Tour = {
-  id: string;
-  name: string;
-  info: string;
-  image: string;
-  price: string;
-  // Add more fields as necessary.
-};
+const tourSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  info: z.string(),
+  image: z.string(),
+  price: z.string(),
+  somethign: z.string(),
+});
+
+// extract the inferred type
+type Tour = z.infer<typeof tourSchema>;
 
 async function fetchData(url: string): Promise<Tour[]> {
   try {
@@ -25,12 +27,15 @@ async function fetchData(url: string): Promise<Tour[]> {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data: Tour[] = await response.json();
-    console.log(data);
-    return data;
+    const rawData: Tour[] = await response.json();
+    const result = tourSchema.array().safeParse(rawData);
+    if (!result.success) {
+      throw new Error(`Invalid data: ${result.error}`);
+    }
+    return result.data;
   } catch (error) {
     const errMsg = error instanceof Error ? error.message : "there was an error...";
-    console.error(errMsg);
+    console.log(errMsg);
 
     // throw error;
     return [];
