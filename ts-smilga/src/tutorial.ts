@@ -1,58 +1,62 @@
 /*
-## Typescript Declaration File
+## Classes - Intro
 
-In TypeScript, .d.ts files, also known as declaration files,consist of type definitions, 
-and are used to provide types for JavaScript code. They allow TypeScript to understand 
-the shape and types of objects, functions, classes, etc., in JavaScript libraries, 
-enabling type checking and autocompletion in TypeScript code that uses these libraries.
+Classes in JavaScript are a blueprint for creating objects. 
+They encapsulate data with code to manipulate that data. 
+Classes in JavaScript support inheritance and can be used to 
+create more complex data structures.
 
-- create types.ts
-- export RandomType
-
-- `lib`: Set to `["ES2020", "DOM", "DOM.Iterable"]`. This specifies the library files to be included in the compilation.
-  Specify a set of bundled library declaration files that describe the target runtime environment.
-
-- libraries
-
-[DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)
-
-- password hashing library
+A constructor in a class is a special method that gets called 
+when you create a new instance of the class. It's often used 
+to set the initial state of the object.
 */
+
+class Book {
+  title: string;
+  author: string;
+  constructor(title: string, author: string) {
+    this.title = title;
+    this.author = author;
+  }
+}
+
+const deepWork = new Book("deep work ", "cal newport");
 
 /*
-# tsconfig.json Configuration
+## Classes - Instance Property / Default Property
 
-[tsconfig](https://www.typescriptlang.org/tsconfig)
-
-This project's TypeScript configuration is defined in the `tsconfig.json` file. Here's a breakdown of the configuration options:
-
-- `include`: Set to `["src"]`. This tells TypeScript to only convert files in the `src` directory.
-
-- `target`: Set to `ES2020`. This is the JavaScript version that the TypeScript code will be compiled to.
-
-- `useDefineForClassFields`: Set to `true`. This enables the use of the `define` semantics for initializing class fields.
-
-- `module`: Set to `ESNext`. This is the module system for the compiled code.
-
-- `lib`: Set to `["ES2020", "DOM", "DOM.Iterable"]`. This specifies the library files to be included in the compilation.
-
-- `skipLibCheck`: Set to `true`. This makes TypeScript skip type checking of declaration files (`*.d.ts`).
-
-- `moduleResolution`: Set to `bundler`. This sets the strategy TypeScript uses to resolve modules.
-
-- `allowImportingTsExtensions`: Set to `true`. This allows importing of TypeScript files from JavaScript files.
-
-- `resolveJsonModule`: Set to `true`. This allows importing of `.json` modules from TypeScript files.
-
-- `isolatedModules`: Set to `true`. This ensures that each file can be safely transpiled without relying on other import/export files.
-
-- `noEmit`: Set to `true`. This tells TypeScript to not emit any output files (`*.js` and `*.d.ts` files) after compilation.
-
-- `strict`: Set to `true`. This enables all strict type-checking options.
-
-- `noUnusedLocals`: Set to `true`. This reports an error when local variables are declared but never used.
-
-- `noUnusedParameters`: Set to `true`. This reports an error when function parameters are declared but never used.
-
-- `noFallthroughCasesInSwitch`: Set to `true`. This reports an error for fall through cases in switch statements.
+The checkedOut property in Book class is an instance property (or member variable). 
+It's not specifically set in the constructor, so it could also be referred to as a 
+default property or a property with a default value.
 */
+class Book2 {
+  title: string;
+  author: string;
+  checkedOut: boolean = false;
+  constructor(title: string, author: string) {
+    this.title = title;
+    this.author = author;
+  }
+}
+
+const deepWorkBook = new Book2("deep work ", "cal newport");
+deepWorkBook.checkedOut = true;
+// deepWorkBook.checkedOut = 'something else';
+
+/*
+## Classes - ReadOnly Modifier
+- readonly modifier
+*/
+class Book3 {
+  readonly title: string;
+  author: string;
+  checkedOut: boolean = false;
+  constructor(title: string, author: string) {
+    this.title = title;
+    this.author = author;
+  }
+}
+
+const deepWork3 = new Book3("deep work ", "cal newport");
+
+deepWork3.title = "something else";
