@@ -1,62 +1,106 @@
 /*
-## Classes - Intro
-
-Classes in JavaScript are a blueprint for creating objects. 
-They encapsulate data with code to manipulate that data. 
-Classes in JavaScript support inheritance and can be used to 
-create more complex data structures.
-
-A constructor in a class is a special method that gets called 
-when you create a new instance of the class. It's often used 
-to set the initial state of the object.
+## Classes - Private and Public Modifiers
 */
-
 class Book {
-  title: string;
-  author: string;
+  public readonly title: string;
+  public author: string;
+  private checkedOut: boolean = false;
   constructor(title: string, author: string) {
     this.title = title;
     this.author = author;
   }
+  public checkOut() {
+    this.checkedOut = this.toggleCheckedOutStatus();
+  }
+  public isCheckedOut() {
+    return this.checkedOut;
+  }
+  private toggleCheckedOutStatus() {
+    return !this.checkedOut;
+  }
 }
 
-const deepWork = new Book("deep work ", "cal newport");
+const deepWork = new Book("Deep Work", "Cal Newport");
+deepWork.checkOut();
+console.log(deepWork.isCheckedOut()); // true
+// deepWork.toggleCheckedOutStatus(); // Error: Property 'toggleCheckedOutStatus' is private and only accessible within class 'Book'.
 
 /*
-## Classes - Instance Property / Default Property
+## Classes - Shorthand Syntax
 
-The checkedOut property in Book class is an instance property (or member variable). 
-It's not specifically set in the constructor, so it could also be referred to as a 
-default property or a property with a default value.
+In TypeScript, if you want to use the shorthand for creating and initializing class properties in the constructor, 
+you need to use public, private, or protected access modifiers.
 */
 class Book2 {
-  title: string;
-  author: string;
-  checkedOut: boolean = false;
-  constructor(title: string, author: string) {
-    this.title = title;
-    this.author = author;
-  }
+  private checkedOut: boolean = false;
+  constructor(
+    public readonly title: string,
+    public author: string,
+  ) {}
 }
-
-const deepWorkBook = new Book2("deep work ", "cal newport");
-deepWorkBook.checkedOut = true;
-// deepWorkBook.checkedOut = 'something else';
 
 /*
-## Classes - ReadOnly Modifier
-- readonly modifier
+## Classes - Getters and Setters
+
+Getters and setters are special methods in a class that allow you to control how a property 
+is accessed and modified.They are used like properties, not methods, so you don't use parentheses 
+to call them.
 */
 class Book3 {
-  readonly title: string;
-  author: string;
-  checkedOut: boolean = false;
-  constructor(title: string, author: string) {
-    this.title = title;
-    this.author = author;
+  private checkedOut: boolean = false;
+  constructor(
+    public readonly title: string,
+    public author: string,
+  ) {}
+  get info() {
+    return `${this.title} by ${this.author}`;
+  }
+
+  private set checkOut(checkedOut: boolean) {
+    this.checkedOut = checkedOut;
+  }
+  get checkOut() {
+    return this.checkedOut;
+  }
+  public get someInfo() {
+    this.checkOut = true;
+    return `${this.title} by ${this.author}`;
   }
 }
 
-const deepWork3 = new Book3("deep work ", "cal newport");
+const deepWork2 = new Book3("deep work", "cal newport");
+console.log(deepWork2.info);
+// deepWork2.checkOut = true;
+console.log(deepWork2.someInfo);
+console.log(deepWork2.checkOut);
 
-deepWork3.title = "something else";
+/*
+## Classes - Implement Interface
+
+In TypeScript, an interface is a way to define a contract for a certain 
+structure of an object. This contract can then be used by a class to ensure 
+it adheres to the structure defined by the interface.
+
+When a class implements an interface, it is essentially promising that 
+it will provide all the properties and methods defined in the interface. 
+If it does not, TypeScript will throw an error at compile time.
+*/
+interface IPerson {
+  name: string;
+  age: number;
+  greet(): void;
+}
+
+class Person implements IPerson {
+  constructor(
+    public name: string,
+    public age: number,
+  ) {}
+
+  greet() {
+    console.log(`Hello, my name is ${this.name} and I'm ${this.age} years old.`);
+  }
+}
+
+const hipster = new Person("shakeAndBake", 100);
+hipster.greet();
