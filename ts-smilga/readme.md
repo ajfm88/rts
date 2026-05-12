@@ -1,35 +1,3 @@
-## Tasks - Setup
-
-- create tasks.html (root) and src/tasks.ts
-- optional : change href in main.ts
-- optional css
-  - create tasks.css (copy from final or end of the README)
-  - setup link in tasks.html
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tasks</title>
-    <link rel="stylesheet" href="src/tasks.css" />
-  </head>
-  <body>
-    <main>
-      <h2>Tasks</h2>
-      <form class="form">
-        <input type="text" class="form-input" />
-        <button type="submit" class="btn">add task</button>
-      </form>
-      <ul class="list"></ul>
-      <button class="test-btn">click me</button>
-    </main>
-    <script type="module" src="src/tasks.ts"></script>
-  </body>
-</html>
-```
-
 ## Tasks - Part 2
 
 ```ts
