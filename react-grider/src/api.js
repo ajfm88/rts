@@ -5,7 +5,9 @@ const searchImages = async (term) => {
     headers: {
       Authorization: `Client-ID ${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}`,
     },
-    params: { query: term },
+    params: {
+      query: term,
+    },
   });
 
   return response.data.results;
