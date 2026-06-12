@@ -8,6 +8,7 @@ function App() {
 
   const fetchBooks = async () => {
     const response = await axios.get("http://localhost:3001/books");
+
     setBooks(response.data);
   };
 
@@ -16,13 +17,13 @@ function App() {
   }, []);
 
   const editBookById = async (id, newTitle) => {
-    const respose = await axios.put(`http://localhost:3001/books/${id}`, {
+    const response = await axios.put(`http://localhost:3001/books/${id}`, {
       title: newTitle,
     });
 
     const updatedBooks = books.map((book) => {
       if (book.id === id) {
-        return { ...book, ...respose.data };
+        return { ...book, ...response.data };
       }
 
       return book;
@@ -33,6 +34,7 @@ function App() {
 
   const deleteBookById = async (id) => {
     await axios.delete(`http://localhost:3001/books/${id}`);
+
     const updatedBooks = books.filter((book) => {
       return book.id !== id;
     });
@@ -44,7 +46,7 @@ function App() {
     const response = await axios.post("http://localhost:3001/books", {
       title,
     });
-    console.log(response);
+
     const updatedBooks = [...books, response.data];
     setBooks(updatedBooks);
   };
