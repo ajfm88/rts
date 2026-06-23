@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CSS: Form</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.29.7/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+      :root {
+        --bg: #0f1626;
+        --panel: #161f33;
+        --panel-2: #1d2840;
+        --border: #2a3656;
+        --text: #d7deea;
+        --muted: #8a96ad;
+        --accent: #7cc4ff;
+        --pass: #3ddc84;
+        --fail: #ff6b6b;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; }
+      body {
+        background: var(--bg); color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-size: 15px; line-height: 1.5;
+      }
+      #root { height: 100vh; }
+      .layout { display: grid; grid-template-columns: 1fr 2fr; height: 100vh; }
+      .pane { height: 100vh; overflow-y: auto; padding: 28px 32px; }
+      .pane.left { border-right: 1px solid var(--border); background: var(--panel); }
+      .pane.right { background: var(--bg); }
+
+      .readme h1 { font-size: 22px; margin-top: 0; }
+      .readme h2 { font-size: 18px; }
+      .readme code { background: #0c1424; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+      .readme ul { padding-left: 20px; }
+
+      .right h2 { margin-top: 0; font-size: 18px; }
+      .sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+      .preview {
+        width: 100%; height: 620px; border: 1px solid var(--border); border-radius: 8px;
+        background: #fff; margin-bottom: 18px;
+      }
+      button.run {
+        background: var(--pass); color: #06251a; border: none; border-radius: 6px;
+        padding: 10px 20px; font-size: 14px; font-weight: 700; cursor: pointer;
+      }
+      button.run:disabled { opacity: 0.6; cursor: default; }
+
+      .cases { margin-top: 22px; }
+      .case {
+        display: flex; align-items: baseline; gap: 10px; padding: 8px 12px;
+        border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px; background: var(--panel);
+      }
+      .badge { font-weight: 700; font-size: 12px; white-space: nowrap; }
+      .badge.pass { color: var(--pass); }
+      .badge.fail { color: var(--fail); }
+      .case-name { font-weight: 600; }
+      .case-detail { color: var(--muted); font-size: 13px; margin-top: 4px; }
+      .summary-line { margin: 16px 0 8px; font-weight: 700; }
+      .summary-line.pass { color: var(--pass); }
+      .summary-line.fail { color: var(--fail); }
+      .errbox {
+        background: #2a1620; border: 1px solid var(--fail); color: #ffc4c4;
+        border-radius: 8px; padding: 12px 16px; margin-top: 16px;
+        font-family: "Consolas", monospace; font-size: 13px; white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel" data-presets="react">
+      const { useState, useEffect, useRef } = React;
+
+      // Layout checks run against the live preview iframe (a real browser layout).
+      function runChecks(doc) {
+        const form = doc.querySelector(".form");
+        if (!form) return [{ name: "Form is present", passed: false, detail: ".form not found in the preview." }];
+
+        const win = doc.defaultView;
+        const q = (c) => form.querySelector("." + c);
+        const els = {
+          first: q("first-name"), last: q("last-name"), age: q("age"),
+          address: q("address"), pow: q("place-of-work"), job: q("job-title"),
+          phone: q("phone-number"), skype: q("skype"),
+          button: form.querySelector("button"),
+        };
+        const missing = Object.entries(els).filter(([, el]) => !el).map(([k]) => k);
+        if (missing.length) {
+          return [{ name: "All form fields are present", passed: false, detail: "Missing: " + missing.join(", ") }];
+        }
+
+        const r = (el) => el.getBoundingClientRect();
+        const approx = (a, b, t = 2) => Math.abs(a - b) <= t;
+        const sameRow = (a, b) => approx(r(a).top, r(b).top);
+        const eqWidth = (a, b) => approx(r(a).width, r(b).width);
+        const below = (a, b) => r(a).top > r(b).top + 1;
+
+        const leftEdge = r(els.first).left;
+        const rightEdge = r(els.age).right;
+        const fullWidth = rightEdge - leftEdge;
+
+        // Number of columns in the form's grid (resolved to px tracks in computed style).
+        const colCount = () => {
+          const tracks = win.getComputedStyle(form).gridTemplateColumns;
+          if (!tracks || tracks === "none") return null;
+          return tracks.trim().split(/\s+/).length;
+        };
+        // True if the element's grid AREA covers every column (full form width),
+        // regardless of whether the element's own box stretches to fill it. Form
+        // controls like <button> often keep an intrinsic width even when their cell
+        // spans the row, so measuring the painted box alone gives false negatives.
+        const gridSpansAll = (el) => {
+          const n = colCount();
+          if (!n) return false;
+          const cs = win.getComputedStyle(el);
+          const span = /span\s+(\d+)/.exec(cs.gridColumnEnd) || /span\s+(\d+)/.exec(cs.gridColumnStart);
+          if (span && parseInt(span[1], 10) >= n) return true;
+          const end = cs.gridColumnEnd;
+          return cs.gridColumnStart === "1" && (end === "-1" || parseInt(end, 10) === n + 1);
+        };
+        // Full-width = the grid area spans all columns, OR (non-grid solutions) the
+        // painted box itself stretches edge-to-edge.
+        const spansFull = (el) =>
+          gridSpansAll(el) || (approx(r(el).left, leftEdge) && approx(r(el).width, fullWidth, 3));
+
+        const hGap = r(els.last).left - r(els.first).right;
+        const vGap = r(els.address).top - r(els.first).bottom;
+        const all = [els.first, els.last, els.age, els.address, els.pow, els.job, els.phone, els.skype, els.button];
+        const noAbsolute =
+          win.getComputedStyle(form).position !== "absolute" &&
+          all.every((el) => win.getComputedStyle(el).position !== "absolute");
+
+        const mk = (name, passed, detail) => ({ name, passed, detail: passed ? "" : detail });
+        return [
+          mk('"First name", "Last name" and "Age" on the first row, equal widths',
+            sameRow(els.first, els.last) && sameRow(els.last, els.age) && eqWidth(els.first, els.last) && eqWidth(els.last, els.age),
+            "These three fields should share one row and have equal widths."),
+          mk('"Address" on the second row, full form width',
+            below(els.address, els.first) && spansFull(els.address),
+            "Address should sit below row 1 and span the full width of the form."),
+          mk('"Place of work" and "Job title" on the third row, equal widths',
+            sameRow(els.pow, els.job) && eqWidth(els.pow, els.job) && below(els.pow, els.address),
+            "These two fields should share a row below Address with equal widths."),
+          mk('"Phone number" and "Skype" on the fourth row, equal widths',
+            sameRow(els.phone, els.skype) && eqWidth(els.phone, els.skype) && below(els.phone, els.pow),
+            "These two fields should share a row with equal widths."),
+          mk("Submit button on the last row, full form width",
+            spansFull(els.button) && below(els.button, els.phone),
+            "The button should be on its own last row and span the full width."),
+          mk("10px gap between elements",
+            approx(hGap, 10, 3) && approx(vGap, 10, 3),
+            "Expected ~10px horizontal and vertical spacing (got " + Math.round(hGap) + "px / " + Math.round(vGap) + "px)."),
+          mk("No element uses position: absolute", noAbsolute,
+            "Lay the form out with grid/flex, not position: absolute."),
+        ];
+      }
+
+      function App() {
+        const [readmeHtml, setReadmeHtml] = useState("");
+        const [running, setRunning] = useState(false);
+        const [result, setResult] = useState(null);
+        const iframeRef = useRef(null);
+
+        useEffect(() => {
+          fetch("/api/readme").then((r) => r.text()).then((md) => setReadmeHtml(marked.parse(md)));
+        }, []);
+
+        const runTests = () => {
+          setRunning(true);
+          setResult(null);
+          const iframe = iframeRef.current;
+          // Reload so the latest saved style.css is reflected, then check on load.
+          iframe.onload = () => {
+            try {
+              const cases = runChecks(iframe.contentDocument);
+              setResult({ ok: cases.every((c) => c.passed), cases });
+            } catch (e) {
+              setResult({ ok: false, error: "Could not read the preview: " + e.message, cases: [] });
+            } finally {
+              setRunning(false);
+            }
+          };
+          iframe.src = "/app/index.html?t=" + Date.now();
+        };
+
+        const passed = result ? result.cases.filter((c) => c.passed).length : 0;
+        const total = result ? result.cases.length : 0;
+
+        return (
+          <div className="layout">
+            <div className="pane left">
+              <div className="readme" dangerouslySetInnerHTML={{ __html: readmeHtml }} />
+            </div>
+            <div className="pane right">
+              <h2>Live preview</h2>
+              <p className="sub">
+                Edit <code>style.css</code> in your editor, save, then click Run Tests. The checks
+                measure the rendered <code>.form</code> below ("Template" is the target to match).
+              </p>
+              <iframe className="preview" ref={iframeRef} src="/app/index.html" title="preview"></iframe>
+              <div>
+                <button className="run" onClick={runTests} disabled={running}>
+                  {running ? "Running..." : "Run Tests"}
+                </button>
+              </div>
+
+              {result && (
+                <div className="cases">
+                  {result.error && <div className="errbox">{result.error}</div>}
+                  {result.cases.map((c, i) => (
+                    <div className="case" key={i}>
+                      <span className={"badge " + (c.passed ? "pass" : "fail")}>
+                        {c.passed ? "PASS" : "FAIL"}
+                      </span>
+                      <span>
+                        <span className="case-name">{c.name}</span>
+                        {c.detail && <div className="case-detail">{c.detail}</div>}
+                      </span>
+                    </div>
+                  ))}
+                  {total > 0 && (
+                    <div className={"summary-line " + (result.ok ? "pass" : "fail")}>
+                      {passed}/{total} checks passed{result.ok ? " - solved!" : ""}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>

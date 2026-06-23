@@ -1,0 +1,13 @@
+{
+  "name": "css-basic-form",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CSS (Basic) - Form layout. Edit style.css and run the tests in the browser.",
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "node -e \"console.log('CSS layout checks run in the browser \\u2014 open the app and click Run Tests.')\""
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
