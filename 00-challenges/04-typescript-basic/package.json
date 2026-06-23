@@ -1,0 +1,13 @@
+{
+  "name": "shopping-cart-challenge",
+  "version": "1.0.0",
+  "description": "TypeScript: Shopping Cart Total",
+  "scripts": {
+    "build": "tsc",
+    "test": "node tests/runner.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.39",
+    "typescript": "^5.4.0"
+  }
+}

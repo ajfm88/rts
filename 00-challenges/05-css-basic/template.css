@@ -1,0 +1,29 @@
+.template-form {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
+.template-form input:nth-child(1),
+.template-form input:nth-child(2),
+.template-form input:nth-child(3) {
+  grid-column: span 2;
+}
+
+.template-form input:nth-child(4) {
+  grid-column: span 6;
+}
+
+.template-form input:nth-child(5),
+.template-form input:nth-child(6) {
+  grid-column: span 3;
+}
+
+.template-form input:nth-child(7),
+.template-form input:nth-child(8) {
+  grid-column: span 3;
+}
+
+.template-form button[type="submit"] {
+  grid-column: span 6;
+}

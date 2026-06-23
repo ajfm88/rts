@@ -1,0 +1,32 @@
+/* ===========================================
+   YOUR FORM - Implement your solution below
+   =========================================== */
+.form {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
+.first-name,
+.last-name,
+.age {
+  grid-column: span 2;
+}
+
+.address {
+  grid-column: span 6;
+}
+
+.place-of-work,
+.job-title {
+  grid-column: span 3;
+}
+
+.phone-number,
+.skype {
+  grid-column: span 3;
+}
+
+button[type="submit"] {
+  grid-column: span 6;
+}

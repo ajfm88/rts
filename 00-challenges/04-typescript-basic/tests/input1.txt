@@ -1,0 +1,5 @@
+4
+item1 Laptop 1000.00 2 10
+item2 Mouse 50.00 3
+item3 Keyboard 100.00 1 20
+item4 Monitor 300.00 2
