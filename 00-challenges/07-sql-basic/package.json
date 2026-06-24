@@ -1,0 +1,12 @@
+{
+  "name": "sql-basic-billing-report",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SQL (Basic) - Billing Software Report. Edit solution.sql and run the tests.",
+  "scripts": {
+    "test": "node tests/runner.js"
+  },
+  "dependencies": {
+    "sql.js": "^1.10.3"
+  }
+}

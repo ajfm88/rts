@@ -1,0 +1,13 @@
+{
+  "comment": "Barcodes the runner will query. Expected values are computed from mock/inventory.json by the reference implementation, so found/not-found stays in sync with the data.",
+  "barcodes": [
+    "74002314",
+    "74005364",
+    "74001755",
+    "74001234",
+    "74009999",
+    "74007777",
+    "74008888",
+    "74003210"
+  ]
+}

@@ -1,0 +1,9 @@
+[
+  { "barcode": "74001755", "item": "Ball Gown", "category": "Full Body Outfits", "price": 785, "discount": 7, "available": 1 },
+  { "barcode": "74002314", "item": "Nightgown", "category": "Underwear", "price": 3705, "discount": 20, "available": 1 },
+  { "barcode": "74001234", "item": "Leather Jacket", "category": "Outerwear", "price": 1200, "discount": 15, "available": 1 },
+  { "barcode": "74009999", "item": "Cotton Socks", "category": "Accessories", "price": 49, "discount": 0, "available": 1 },
+  { "barcode": "74007777", "item": "Summer Dress", "category": "Full Body Outfits", "price": 250, "discount": 50, "available": 1 },
+  { "barcode": "74008888", "item": "Wool Coat", "category": "Outerwear", "price": 999, "discount": 33, "available": 1 },
+  { "barcode": "74006543", "item": "Silk Scarf", "category": "Accessories", "price": 60, "discount": 5, "available": 1 }
+]
