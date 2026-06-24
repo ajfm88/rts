@@ -1,0 +1,13 @@
+{
+  "name": "rest-api-discounted-price",
+  "version": "1.0.0",
+  "private": true,
+  "description": "REST API (Basic) - Discounted Price. Edit solution/getDiscountedPrice.js and run the tests.",
+  "scripts": {
+    "test": "node tests/runner.js"
+  },
+  "dependencies": {
+    "axios": "^1.18.0",
+    "express": "^4.19.2"
+  }
+}

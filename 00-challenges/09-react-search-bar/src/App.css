@@ -1,0 +1,65 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px 28px;
+  background: #1b2330;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+.page {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 28px 80px;
+}
+
+.page h1 {
+  font-size: 30px;
+  margin: 0 0 12px;
+}
+
+.lede {
+  font-size: 17px;
+  color: #333;
+  margin: 0 0 8px;
+}
+
+.hint {
+  color: #666;
+  margin: 0 0 32px;
+}
+
+code {
+  background: #eef1f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f7fa;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #334;
+}
