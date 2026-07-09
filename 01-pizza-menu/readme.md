@@ -153,3 +153,18 @@ const el = React.createElement("h1", null, "Hello React!");
 - CSS inline styles are written like this: `{{<style>}}` (to reference a variable, and then an object)
 - CSS property names are also **camelCased**
 - Comments need to be in `{}` (because they are JS)
+
+## Section Summary
+
+### Component Tree
+
+- `App` → `Header` / `Menu` / `Footer` → `Menu` → `Pizza` (x3), `Footer` → `Order`
+- **Props** pass data from parent to child components (down the tree only)
+- **List of Pizzas**: rendering multiple components at once using the JS `.map()` method
+- Components can be **conditionally rendered** using JS tools: `&&`, `?`, and multiple `return`
+
+### Anatomy of a Component
+
+- **Data** + **JS Logic** + **Appearance (JSX)**
+- JSX itself is made of **"HTML"**, **CSS**, and **JS inside `{}`**
+- The JSX block is what we **return** from a component
