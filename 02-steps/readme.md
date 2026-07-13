@@ -42,3 +42,66 @@
   - **State** — the component's **own** internal data
 
 Note: You can only call **hooks** like **useState** at the top level of a function.
+
+## The Mechanics of State in React
+
+- We **don't do direct DOM manipulations** — because React is **declarative** (we never touch the DOM by hand)
+- **How is a component view updated then?**
+- **In React, a view is updated by re-rendering the component** — _important React principle_
+- A component is **re-rendered when its state is updated**
+- **So to update a view, we update state** ✅ (this is the takeaway the whole chain leads to)
+
+### The flow
+
+```
+STATE  →  RENDER / RE-RENDER  →  UPDATED VIEW
+```
+
+- **STATE** → When state changes, React **calls the component function again** (this is the re-render)
+- **RENDER / RE-RENDER** → produces the new view
+- **UPDATED VIEW** → the UI reflecting the new state
+
+> 👉 **State is preserved throughout re-renders** — even though React calls the component function again, the state is not reset.
+
+### The full update cycle (event-driven)
+
+The view triggers the cycle, and the cycle produces a new view — updating state is the mechanism that connects them:
+
+1. **Event handler** — an event on the current view (e.g. a button click) runs an event handler
+2. **Update state** — the handler updates the state → **Updated State**
+3. **Re-render** — the state change triggers **Render / Re-render**, producing the **Updated View**
+
+```
+                    ┌──────── 3. RE-RENDER ────────┐
+                    ▼                               │
+   UPDATED STATE  →  RENDER / RE-RENDER  →  UPDATED VIEW
+        ▲                                           │
+        └──────── 2. UPDATE STATE ◄── 1. Event handler
+```
+
+> This is what makes React apps interactive: **event → update state → re-render → updated view**, and around again.
+
+### A concrete example (the "advice" app)
+
+State declared with `useState`, where the initial value renders into the view:
+
+```jsx
+const [advice, setAdvice] = useState("Quality beats quantity.");
+const [countAdvice, setCountAdvice] = useState(13);
+```
+
+When the **Get advice** button is clicked, the handler **updates state**:
+
+```jsx
+setAdvice(data.slip.advice);
+setCountAdvice((count) => count + 1);
+```
+
+- This triggers a **re-render**, and the view reflects the new state — the advice text and _"You have read **13** pieces of advice"_
+- Note `setCountAdvice((count) => count + 1)` uses the **updater function** form: the new value is derived from the **current** state (`count`)
+
+### Why is React called "React"?
+
+> 👉 **React _reacts_ to state changes by re-rendering the UI.**
+
+- This is the whole point: **`DATA ⇄ UI`** — the data (state) and the UI are kept in a two-way sync loop, where a change in state drives React to re-render the UI to match.
