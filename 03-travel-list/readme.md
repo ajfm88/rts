@@ -185,3 +185,57 @@ Starting from **"Place a new piece of state in component"**:
 3. **Used by one or a few sibling components?**
    - **Yes** → **lift state up** to the first common parent
    - **No** → probably **global state** (global state management covered later in the course...)
+
+# Lifting State Up
+
+> Section: **Thinking in React: State Management** — Lecture: **Reviewing "Lifting Up State"**
+
+## Problem: Sharing State With a Sibling Component
+
+### Example — Checkout Page
+
+Component tree:
+
+```
+        Checkout
+       /        \
+    Total      Promotions   ← owns [coupons, setCoupons]
+```
+
+- `Promotions` owns the **`coupons` state** (the "Enter Coupon" / "Apply" box)
+- 👉 The **`Total` component also needs access to `coupons` state** — the discounted price (`€30.98`, 82% off) depends on the applied coupon
+- ❌ But data **can only flow down to children (via props), not sideways to siblings**
+- **ONE-WAY DATA FLOW** ⬇️
+
+> 🤔 **How do we share state with other components?**
+
+## Solution: Lifting State Up
+
+> **State was lifted up to the closest _common_ parent**
+
+```
+        Checkout   ← now owns [coupons, setCoupons]
+       /        \
+   props        props
+     ↓            ↓
+   Total      Promotions
+ (coupons)     (coupons)
+```
+
+- The `coupons` state is **moved from `Promotions` up to `Checkout`** (the closest common parent)
+- `Checkout` then passes `coupons` **down as props** to **both** `Total` and `Promotions`
+- `Promotions` also receives `setCoupons` as a prop so it can still **update** the state (child-to-parent communication)
+- **ONE-WAY DATA FLOW** is preserved — nothing ever flows sideways
+
+> ✌️ **By lifting state up, we have successfully shared one piece of state with multiple components in different positions in the component tree**
+
+## Child-to-Parent Communication
+
+> 🤔 If data flows from parent to children, how can `Promotions` (child) **update** state in `Checkout` (parent)?
+
+- 👉 **Child-to-parent communication (inverse data flow):** child updating parent state (data "flowing" **up**)
+- `Checkout` passes **`setCoupons` down as a prop** to `Promotions`
+- When the user clicks **Apply**, `Promotions` calls `setCoupons(...)` → **UPDATE**s the state that lives in `Checkout`
+- The new `coupons` value then flows back **down as props** to both `Total` and `Promotions`
+
+> 🔑 It's not really "inverse" data flow — the **setter function** is just another prop passed down. Data still only flows one way; the child merely gets a handle to trigger the parent's update.
