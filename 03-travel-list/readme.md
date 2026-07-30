@@ -239,3 +239,43 @@ Component tree:
 - The new `coupons` value then flows back **down as props** to both `Total` and `Promotions`
 
 > 🔑 It's not really "inverse" data flow — the **setter function** is just another prop passed down. Data still only flows one way; the child merely gets a handle to trigger the parent's update.
+
+# Deriving State
+
+> Section: **Thinking in React: State Management** — Lecture: **Deriving State**
+
+## Problem: Redundant State
+
+```jsx
+const [cart, setCart] = useState([
+  { name: "JavaScript Course", price: 15.99 },
+  { name: "Node.js Bootcamp", price: 14.99 },
+]);
+const [numItems, setNumItems] = useState(2);
+const [totalPrice, setTotalPrice] = useState(30.98);
+```
+
+- 👎 **Three separate pieces of state**, even though `numItems` and `totalPrice` **depend on `cart`**
+- `cart` is the only piece of data that actually needs to be **stored** — `numItems` and `totalPrice` can always be **calculated from it**
+- 👎 **Need to keep them in sync** (update together) — keeping them as separate state means they can get **out of sync** with `cart` and requires **manually updating all three** on every change
+- 👎 **3 state updates will cause 3 re-renders**
+
+## Solution: Derived State
+
+> 👍 **Derived state:** state that is **computed from an existing piece of state or from props**
+
+```jsx
+const [cart, setCart] = useState([
+  { name: "JavaScript Course", price: 15.99 },
+  { name: "Node.js Bootcamp", price: 14.99 },
+]);
+const numItems = cart.length;
+const totalPrice = cart.reduce((sum, cur) => sum + cur.price, 0);
+```
+
+- `numItems` and `totalPrice` are no longer `useState` — **just regular variables**, derived from `cart`
+- `cart` state is the **single source of truth** for this related data
+- ✅ Works because **re-rendering the component** will **automatically re-calculate** derived state — `numItems` and `totalPrice` stay in sync with `cart` for free, since they're recalculated on every render
+- Fewer state updates → simpler code, no risk of state getting out of sync
+
+> 🔑 Whenever a value can be **computed from existing state/props**, derive it instead of storing it as its own state (see the "when to create state" decision flow above).
