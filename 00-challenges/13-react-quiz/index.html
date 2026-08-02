@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Challenge 13 — React Quiz</title>
+    <style>
+      :root {
+        --bg: #fbfaf9;
+        --fg: #1a1a19;
+        --muted: #6b6b68;
+        --line: #e0dedb;
+        --card: #ffffff;
+        --code-bg: #262625;
+        --code-fg: #f2f0ed;
+        --ok: #1f7a4d;
+        --ok-bg: #eaf6ef;
+        --bad: #b3261e;
+        --bad-bg: #fceceb;
+        --accent: #1a1a19;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #141413;
+          --fg: #f2f0ed;
+          --muted: #a3a3a0;
+          --line: #333331;
+          --card: #1d1d1b;
+          --ok: #6fce9f;
+          --ok-bg: #16281f;
+          --bad: #f2867d;
+          --bad-bg: #2b1917;
+          --accent: #f2f0ed;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font: 16px/1.6 ui-sans-serif, -apple-system, "Segoe UI", system-ui, sans-serif;
+      }
+      .wrap { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+      header { border-bottom: 1px solid var(--line); padding-bottom: 16px; margin-bottom: 28px; }
+      h1 { font-size: 20px; margin: 0 0 4px; letter-spacing: -0.01em; }
+      .sub { color: var(--muted); font-size: 14px; }
+      .bar { height: 4px; background: var(--line); border-radius: 2px; margin: 20px 0 28px; overflow: hidden; }
+      .bar > div { height: 100%; background: var(--accent); transition: width 0.25s ease; }
+      .qnum { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+      h2 { font-size: 18px; margin: 6px 0 18px; font-weight: 600; line-height: 1.45; }
+      code.inline {
+        background: var(--line); padding: 1px 6px; border-radius: 4px;
+        font: 13px/1.4 ui-monospace, "Cascadia Code", Consolas, monospace;
+      }
+      pre {
+        background: var(--code-bg); color: var(--code-fg); padding: 16px 18px;
+        border-radius: 8px; overflow-x: auto; margin: 0 0 22px;
+        font: 13px/1.6 ui-monospace, "Cascadia Code", Consolas, monospace;
+      }
+      pre.opt { margin: 0; font-size: 12.5px; }
+      ul.opts { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+      button.opt {
+        width: 100%; text-align: left; background: var(--card); color: var(--fg);
+        border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px;
+        font: inherit; cursor: pointer; transition: border-color 0.15s, background 0.15s;
+      }
+      button.opt:hover:not(:disabled) { border-color: var(--accent); }
+      button.opt:disabled { cursor: default; }
+      button.opt.correct { border-color: var(--ok); background: var(--ok-bg); }
+      button.opt.wrong { border-color: var(--bad); background: var(--bad-bg); }
+      .mark { font-weight: 600; margin-right: 8px; }
+      .mark.correct { color: var(--ok); }
+      .mark.wrong { color: var(--bad); }
+      .explain {
+        margin-top: 22px; border-left: 3px solid var(--accent);
+        background: var(--card); padding: 14px 18px; border-radius: 0 8px 8px 0;
+      }
+      .explain h3 { margin: 0 0 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+      .explain p { margin: 0 0 10px; font-size: 15px; }
+      .explain p:last-child { margin-bottom: 0; }
+      .nav { margin-top: 28px; display: flex; gap: 12px; align-items: center; }
+      button.next {
+        background: var(--accent); color: var(--bg); border: 0; border-radius: 8px;
+        padding: 11px 22px; font: inherit; font-weight: 600; cursor: pointer;
+      }
+      button.ghost {
+        background: transparent; color: var(--muted); border: 1px solid var(--line);
+        border-radius: 8px; padding: 11px 18px; font: inherit; cursor: pointer;
+      }
+      .score { font-size: 14px; color: var(--muted); margin-left: auto; }
+      .final h2 { font-size: 26px; }
+      .tally { display: grid; gap: 8px; margin: 24px 0; }
+      .tally div { display: flex; gap: 10px; font-size: 14px; align-items: baseline; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      const { useState } = React;
+
+      const QUESTIONS = [
+        {
+          title: 'Considering the code below, what is the value of the counter variable?',
+          code: `const MyComponent = () => {
+  const [counter] = useReducer((s = 3) => s, 0);
+  return <div />;
+};`,
+          options: ['undefined', '3', '0', '[]'],
+          mono: true,
+          correct: 2,
+          explain: [
+            'useReducer(reducer, initialState) returns [state, dispatch], and the initial state is the second argument — 0.',
+            'The `s = 3` default belongs to the reducer and only applies when the reducer is called with state === undefined, which never happens because no action is ever dispatched.',
+          ],
+        },
+        {
+          title: 'Which statement describes the effect of the code below?',
+          code: `const MyComponent = () => {
+  let counter = 1;
+  useEffect(() => {
+    console.log('Hello');
+  }, [counter]);
+  return (
+    <div>
+      <button onClick={() => { counter = counter + 1; }}>
+        Click me
+      </button>
+    </div>
+  );
+};`,
+          options: [
+            'The message Hello is printed only after the button is clicked.',
+            'The message Hello is never printed.',
+            'The message Hello is printed when MyComponent is mounted and each time the button is clicked.',
+            'The message Hello is printed once when MyComponent is mounted.',
+          ],
+          correct: 3,
+          explain: [
+            '`counter` is a plain local variable, not state. Mutating it schedules no re-render, so the component body never runs again and the dependency array is never re-compared.',
+            'Even if a re-render did happen, `let counter = 1` would reset to 1 every time, so the dependency would always look unchanged. The effect runs exactly once, on mount.',
+          ],
+        },
+        {
+          title: 'True or false: the component below is considered a controlled component.',
+          code: `const MyComponent = () => {
+  const [isApple, setIsApple] = useState(true);
+  return (
+    <button onClick={() => setIsApple(!isApple)}>
+      {isApple ? 'apple' : 'orange'}
+    </button>
+  );
+};`,
+          options: ['True', 'False'],
+          correct: 1,
+          explain: [
+            '"Controlled" is about who owns the value. In the form sense, a controlled component is an input whose value/checked comes from state and updates via onChange — there is no form element here at all.',
+            'In the component-API sense, a controlled component receives its value and change handler from its parent. MyComponent takes no props and owns isApple internally.',
+            'Rendering something derived from internal state does not make a component controlled — otherwise every stateful component would qualify.',
+          ],
+        },
+        {
+          title: 'How would you improve the code below in order to use a single state instead of two?',
+          code: `const Counter = ({ onChange }) => {
+  const [i, setI] = useState(0);
+  const increment = () => {
+    onChange(i + 1);
+    setI(i + 1);
+  };
+  return <button onClick={increment}>{i}</button>;
+};
+
+const Container = () => {
+  const [i, setI] = useState(0);
+  return (
+    <>
+      <Counter onChange={setI} />
+    </>
+  );
+};`,
+          options: [
+            'It is impossible to use only a single state in this example.',
+            `const Counter = ({ onChange }) => {
+  const [i, setI] = useState(0);
+  const increment = () => {
+    onChange(i + 1);
+    setI(i + 1);
+  };
+  return <button onClick={increment}>{i}</button>;
+};
+
+const Container = () => {
+  let i = 0;
+  return (
+    <>
+      <Counter onChange={(v) => (i = v)} />
+    </>
+  );
+};`,
+            `const Counter = ({ i, setI }) => {
+  const increment = () => setI(i + 1);
+  return <button onClick={increment}>{i}</button>;
+};
+
+const Container = () => {
+  const [i, setI] = useState(0);
+  return (
+    <>
+      <Counter i={i} setI={setI} />
+    </>
+  );
+};`,
+            `const Counter = () => {
+  const [i, setI] = useState(0);
+  const increment = () => setI(i + 1);
+  return <button onClick={increment}>{i}</button>;
+};
+
+const Container = () => {
+  return (
+    <>
+      <Counter />
+    </>
+  );
+};`,
+          ],
+          codeOptions: [false, true, true, true],
+          correct: 2,
+          explain: [
+            'Textbook lifting state up. The original keeps two copies of the same number kept in sync by hand — the duplicated-state smell. Option C deletes the child’s copy and makes Counter fully controlled: Container owns the single source of truth and passes down both value and setter.',
+            'Option B replaces the parent state with a plain `let` (reset every render, triggers nothing) and still keeps the child’s useState — it hasn’t even removed the second state.',
+            'Option D is the tempting distractor: it does end up with one state, but it removes the state from the parent instead of the child, so Container can no longer read or share `i`. Collapse duplicated state at the highest level that needs it, not the lowest.',
+          ],
+        },
+        {
+          title: 'Considering the code below, what will happen when the component MyComponent is mounted?',
+          code: `const fetchData = () =>
+  new Promise((r) =>
+    setTimeout(() => {
+      r(['one', 'two']);
+    }, 1000)
+  );
+
+const MyComponent = () => {
+  const [result, setResult] = useState();
+  useEffect(() => {
+    fetchData().then((value) => setResult(value));
+  }, []);
+  return <div>{result.length}</div>;
+};`,
+          options: [
+            'Only the value 2 will be displayed.',
+            'Only the value 0 will be displayed.',
+            "An error: Cannot read property 'length' of undefined.",
+            'The value 0 will be displayed for one second, then the value 2.',
+          ],
+          correct: 2,
+          explain: [
+            'useState() with no argument initialises result to undefined. The component body runs before any effect and long before the promise resolves, so the very first render evaluates undefined.length and throws.',
+            'The app crashes on mount — the fetch result never gets a chance to matter. Fix with useState([]) or a guard like result?.length ?? 0.',
+          ],
+        },
+        {
+          title: 'You want to hide a component after it is hovered by applying the high-order component below. Which component should be used to achieve this behavior?',
+          code: `const withHideOnHover = (C) => () => {
+  const [hovered, setHovered] = useState();
+  return (
+    <C
+      onMouseEnter={() => setHovered(true)}
+      style={hovered ? { display: 'none' } : {}}
+    />
+  );
+};`,
+          options: [
+            'const MyC = (p) => <div onHover={p.onMouseEnter}>Hello</div>;',
+            'const MyC = (p) => <div {...p}>Hello</div>;',
+            'const MyC = (p) => <div onMouseEnter={p}>Hello</div>;',
+            'const MyC = (p) => <div>Hello</div>;',
+          ],
+          mono: true,
+          correct: 1,
+          explain: [
+            'The HOC injects onMouseEnter and style as props. A component does not get DOM behaviour automatically — it has to forward those props onto a real DOM node, which is what spreading {...p} does.',
+            'onHover is not a React DOM event (and style is dropped anyway); onMouseEnter={p} passes the whole props object where a function is expected; the last option ignores props entirely.',
+          ],
+        },
+        {
+          title: 'What is the value of the variable state after the button is clicked two times?',
+          code: `const MyComponent = ({ children }) => {
+  const [state, setState] = useState('one');
+  const C = children;
+  const append = () => setState((s) => s + 'one');
+  return (
+    <div>
+      {state}
+      <C onClick={append} value={state} />
+    </div>
+  );
+};
+
+const MyApp = () => {
+  return (
+    <MyComponent>
+      {({ onClick }) => {
+        return <button onClick={onClick}>Click me</button>;
+      }}
+    </MyComponent>
+  );
+};`,
+          options: ['oneoneone', 'oneone', 'one', 'An empty string'],
+          mono: true,
+          correct: 0,
+          explain: [
+            '`children` is a function, and `const C = children` then `<C />` renders it as a regular function component — the children-as-a-function pattern. The button really is wired to append.',
+            'setState((s) => s + ‘one’) is a functional update, so each call receives the latest state rather than the value captured at render time. Starting from "one": one → oneone → oneoneone.',
+          ],
+        },
+        {
+          title: 'What is displayed on the screen after the component MyApp is rendered?',
+          code: `const MyComponent = ({ render }) => {
+  return <>{render().join(',')}</>;
+};
+
+const MyApp = () => {
+  return <MyComponent render={() => ['One', 'Two']} />;
+};`,
+          options: [
+            'Nothing. The application will crash due to an error.',
+            'The text One,Two',
+            'The text [Object Object]',
+            "The text ['One', 'Two']",
+          ],
+          correct: 1,
+          explain: [
+            'Standard render prop: MyComponent calls the render function it was handed, which returns [‘One’, ‘Two’]. .join(‘,’) turns that into the plain string "One,Two" before React ever sees it.',
+            'A string child renders verbatim and the fragment adds no markup. Nothing can throw, and there is no object to stringify.',
+          ],
+        },
+        {
+          title: 'Considering the code below, what is the value of the variable counter after the button is clicked for the first time?',
+          code: `const MyApp = () => {
+  const [counter, setCounter] = useState(0);
+  return (
+    <div onClick={() => setCounter(counter + 1)}>
+      {counter}
+      {ReactDOM.createPortal(
+        <button>Click me</button>,
+        document.body
+      )}
+    </div>
+  );
+};`,
+          options: ['0', '1', '2', 'undefined'],
+          mono: true,
+          correct: 1,
+          explain: [
+            'A portal changes where the DOM node lands, not where the component lives in the React tree. The button is appended to document.body, but for events it is still a child of the <div>, so the synthetic click bubbles to its onClick.',
+            'That is the documented behaviour of portals and the reason modals still work with handlers on their logical parent. The handler fires exactly once: 0 + 1 = 1.',
+          ],
+        },
+        {
+          title: 'What is the result of the code below in the HTML DOM tree?',
+          code: `const MyApp = () => {
+  return (
+    <>
+      {[
+        <div key="0">Apple</div>,
+        <div key="1">Orange</div>,
+      ]}
+    </>
+  );
+};
+
+ReactDOM.render(<MyApp />, document.getElementById('root'));`,
+          options: [
+            `<div id="root">
+  [
+    <div>Apple</div>
+    <div>Orange</div>
+  ]
+</div>`,
+            `<div id="root">
+  <>
+    <div>Apple</div>
+    <div>Orange</div>
+  </>
+</div>`,
+            `<div id="root">
+  <div>Apple</div>
+  <div>Orange</div>
+</div>`,
+            'None. The code will result in an error.',
+          ],
+          codeOptions: [true, true, true, false],
+          correct: 2,
+          explain: [
+            'Neither fragments nor arrays produce DOM nodes. A fragment is a grouping construct React unwraps when it commits; an array of elements just means "render each of these in order" — the brackets are JavaScript syntax, never output.',
+            'Only the two divs reach the DOM, as direct children of #root. The first two options invent markup with no DOM equivalent, and the code is valid — keys are supplied, which is what an array of children requires.',
+          ],
+        },
+        {
+          title: 'Considering the components below, how many times will the message rendering be printed on the console when the MyApp component is first rendered?',
+          code: `const MyComponent = () => {
+  const [counter, setCounter] = useState(0);
+  console.log('rendering');
+  return (
+    <button onClick={() => setCounter(counter + 1)}>
+      {counter}
+    </button>
+  );
+};
+
+const MyApp = () => {
+  const [message, setMessage] = useState();
+  useEffect(() => {
+    setMessage('Hello');
+  }, []);
+  return (
+    <div>
+      {message}
+      <MyComponent />
+    </div>
+  );
+};`,
+          options: ['One time.', 'Three times.', 'No message will be displayed.', 'Two times.'],
+          correct: 3,
+          explain: [
+            'Initial render: MyApp renders with message === undefined and MyComponent renders as its child — log #1.',
+            'After the effect: useEffect runs post-commit and calls setMessage(‘Hello’). message changed, so MyApp re-renders, and MyComponent is a plain non-memoised child, so it re-renders too even though nothing of its own changed — log #2.',
+            'The effect has [] deps so it never runs again. Worth saying in an interview: under StrictMode in development React 18 double-invokes render, so you would actually see four logs — the question is about production semantics.',
+          ],
+        },
+      ];
+
+      const LETTERS = ['A', 'B', 'C', 'D'];
+
+      function Question({ q, index, picked, onPick, onNext, isLast }) {
+        const answered = picked !== null;
+        return (
+          <div>
+            <div className="qnum">
+              Question {index + 1} of {QUESTIONS.length}
+            </div>
+            <h2>{q.title}</h2>
+            <pre>{q.code}</pre>
+            <ul className="opts">
+              {q.options.map((opt, i) => {
+                const isCode = q.codeOptions ? q.codeOptions[i] : q.mono;
+                const multiline = opt.indexOf('\n') !== -1;
+                let cls = 'opt';
+                if (answered && i === q.correct) cls += ' correct';
+                else if (answered && i === picked) cls += ' wrong';
+                return (
+                  <li key={i}>
+                    <button
+                      className={cls}
+                      disabled={answered}
+                      onClick={() => onPick(i)}
+                    >
+                      {answered && (i === q.correct || i === picked) && (
+                        <span className={'mark ' + (i === q.correct ? 'correct' : 'wrong')}>
+                          {i === q.correct ? '✓' : '✗'}
+                        </span>
+                      )}
+                      <span className="mark">{LETTERS[i]}</span>
+                      {isCode ? (
+                        multiline ? (
+                          <pre className="opt">{opt}</pre>
+                        ) : (
+                          <code className="inline">{opt}</code>
+                        )
+                      ) : (
+                        opt
+                      )}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+            {answered && (
+              <div className="explain">
+                <h3>
+                  {picked === q.correct ? 'Correct' : 'Not quite'} — answer is{' '}
+                  {LETTERS[q.correct]}
+                </h3>
+                {q.explain.map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))}
+              </div>
+            )}
+            {answered && (
+              <div className="nav">
+                <button className="next" onClick={onNext}>
+                  {isLast ? 'See results' : 'Next question'}
+                </button>
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      function Results({ answers, onRestart }) {
+        const right = answers.filter((a, i) => a === QUESTIONS[i].correct).length;
+        return (
+          <div className="final">
+            <h2>
+              {right} / {QUESTIONS.length}
+            </h2>
+            <div className="tally">
+              {QUESTIONS.map((q, i) => {
+                const ok = answers[i] === q.correct;
+                return (
+                  <div key={i}>
+                    <span className={'mark ' + (ok ? 'correct' : 'wrong')}>
+                      {ok ? '✓' : '✗'}
+                    </span>
+                    <span>
+                      Q{i + 1} — {q.title.length > 76 ? q.title.slice(0, 76) + '…' : q.title}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+            <p className="sub">
+              Full write-ups for every question, including the distractors, are in{' '}
+              <code className="inline">readme.md</code>.
+            </p>
+            <div className="nav">
+              <button className="next" onClick={onRestart}>
+                Start over
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      function App() {
+        const [current, setCurrent] = useState(0);
+        const [answers, setAnswers] = useState(() => QUESTIONS.map(() => null));
+        const [done, setDone] = useState(false);
+
+        const pick = (choice) => {
+          if (answers[current] !== null) return;
+          const next = answers.slice();
+          next[current] = choice;
+          setAnswers(next);
+        };
+
+        const advance = () => {
+          if (current === QUESTIONS.length - 1) setDone(true);
+          else setCurrent(current + 1);
+        };
+
+        const restart = () => {
+          setAnswers(QUESTIONS.map(() => null));
+          setCurrent(0);
+          setDone(false);
+        };
+
+        const scored = answers.filter((a, i) => a === QUESTIONS[i].correct).length;
+        const seen = answers.filter((a) => a !== null).length;
+        const pct = done ? 100 : (seen / QUESTIONS.length) * 100;
+
+        return (
+          <div className="wrap">
+            <header>
+              <h1>Challenge 13 — React Quiz</h1>
+              <div className="sub">
+                11 multiple-choice questions on hooks, rendering, portals and reconciliation.
+              </div>
+            </header>
+            <div className="bar">
+              <div style={{ width: pct + '%' }} />
+            </div>
+            {done ? (
+              <Results answers={answers} onRestart={restart} />
+            ) : (
+              <React.Fragment>
+                <Question
+                  q={QUESTIONS[current]}
+                  index={current}
+                  picked={answers[current]}
+                  onPick={pick}
+                  onNext={advance}
+                  isLast={current === QUESTIONS.length - 1}
+                />
+                <div className="nav">
+                  <span className="score">
+                    {scored} correct of {seen} answered
+                  </span>
+                </div>
+              </React.Fragment>
+            )}
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+  </body>
+</html>
