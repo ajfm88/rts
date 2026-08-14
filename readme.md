@@ -1,1 +1,1 @@
-Repo for random small React/TypeScript projects.
+Repo for random small React/Angular/TypeScript projects.
