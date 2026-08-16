@@ -7,7 +7,7 @@ export default function PackingList({
   onToggleItem,
   onClearList,
 }) {
-  const [sortBy, setSortBy] = useState("packed");
+  const [sortBy, setSortBy] = useState("input");
 
   let sortedItems;
 

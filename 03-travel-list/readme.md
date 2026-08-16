@@ -279,3 +279,92 @@ const totalPrice = cart.reduce((sum, cur) => sum + cur.price, 0);
 - Fewer state updates → simpler code, no risk of state getting out of sync
 
 > 🔑 Whenever a value can be **computed from existing state/props**, derive it instead of storing it as its own state (see the "when to create state" decision flow above).
+
+# The `children` Prop
+
+> Section: **State, Events, and Forms: Interactive Components** — Lecture: **The "children" Prop: Making a Reusable Button**
+
+## The `children` Prop
+
+- The **`children` prop** lets us **pass JSX into a component** (besides regular props)
+- Whatever is written **between the opening and closing tags** of a component becomes `props.children`
+- Inside the component, `props.children` is an empty **"hole"** that can be filled by **any JSX** the component receives as children
+
+### Example — a reusable `Button`
+
+Usage (what the parent writes):
+
+```jsx
+<Button onClick={previous}>
+  <span>👈</span> Previous
+</Button>
+```
+
+- `onClick={previous}` is a **regular prop**
+- `<span>👈</span> Previous` is the **children of `Button`**, accessible inside `Button` as `props.children`
+
+```
+              Button
+         ┌──────────────┐
+         │              │
+         │ props.children│  ←  <span>👈</span> Previous
+         │              │
+         └──────────────┘
+```
+
+How `Button` uses it (the "hole"):
+
+```jsx
+function Button({ textColor, bgColor, onClick, children }) {
+  return (
+    <button
+      style={{ backgroundColor: bgColor, color: textColor }}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+}
+```
+
+- The **wrapper** stays the same: styles, `onClick`, the `<button>` element
+- The **content inside** can be anything — `"Previous"`, `"Next 👉"`, an icon, more JSX
+- That is what makes `Button` **reusable**: same component, different children
+
+### Same hole, different children
+
+The empty "hole" is not limited to "Previous". The **same** `Button` can receive completely different JSX:
+
+```jsx
+<Button onClick={previous}>
+  <span>👈</span> Previous
+</Button>
+
+<Button onClick={next}>
+  <span>🎉</span> PARTY <span>🎉</span>
+</Button>
+```
+
+```
+              Button
+         ┌──────────────┐
+         │  🎉 PARTY 🎉  │  ←  props.children
+         └──────────────┘
+```
+
+- Both usages render through the **same** `Button` — only `props.children` changes
+- First fill: `<span>👈</span> Previous`
+- Second fill: `<span>🎉</span> PARTY <span>🎉</span>`
+- Regular props (`onClick`) still configure **behavior**; `children` configures **content**
+
+> 👉 The children prop allows us to **pass JSX into an element** (besides regular props)
+
+> 👉 Essential tool to make **reusable** and **configurable** components (especially component **content**)
+
+> 👉 Really useful for **generic** components that **don't know their content** before being used (e.g. a modal)
+
+- A **modal**, a **card**, a **layout**, a **tooltip** — the wrapper owns the chrome (overlay, close button, padding)
+- The **content** is supplied later by whoever uses the component, via `children`
+- The generic component stays reusable because it never hardcodes what goes in the hole
+
+> 🔑 `children` is just a prop — the special part is that React fills it automatically from whatever you put **between the tags**.
